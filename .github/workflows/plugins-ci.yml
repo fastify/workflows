@@ -7,6 +7,10 @@ jobs:
     test:
         runs-on: ${{ matrix.os }}
 
+        # output.COVERALLS is a variable to determine whether we should post to coveralls when all parallel test finish
+        outputs:
+            COVERALLS: ${{ steps.coveralls-trigger.outputs.COVERALLS_TRIGGER }}
+
         strategy:
             matrix:
                 node-version: [10, 12, 14, 16]
