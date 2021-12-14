@@ -28,7 +28,15 @@ on:
 jobs:
     call-reuseable-workflow:
         uses: fastify/workflows/.github/workflows/plugins-ci.yml@v1
+        with:
+            generate-coverage: true
 ```
+
+## Inputs
+
+| Input Name        | Required | Type    | Default | Description                                             |
+| ----------------- | -------- | ------- | ------- | ------------------------------------------------------- |
+| generate-coverage | false    | boolean | false   | Set to true to generate coverage and send to Coveralls. |
 
 ## Acknowledgements
 
