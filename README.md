@@ -17,16 +17,10 @@ name: CI
 
 on:
     push:
-        branches:
-            - main
-            - master
         paths-ignore:
             - 'docs/**'
             - '*.md'
     pull_request:
-        branches:
-            - main
-            - master
         paths-ignore:
             - 'docs/**'
             - '*.md'
