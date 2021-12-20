@@ -16,20 +16,20 @@ A reusable workflow is called by using the `uses` keyword in another workflow:
 name: CI
 
 on:
-    push:
-        paths-ignore:
-            - 'docs/**'
-            - '*.md'
-    pull_request:
-        paths-ignore:
-            - 'docs/**'
-            - '*.md'
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
 
 jobs:
-    call-reuseable-workflow:
-        uses: fastify/workflows/.github/workflows/plugins-ci.yml@v1
-        with:
-            generate-coverage: true
+  call-reuseable-workflow:
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v1
+    with:
+      generate-coverage: true
 ```
 
 ## Inputs
