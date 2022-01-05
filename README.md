@@ -32,6 +32,8 @@ jobs:
       generate-coverage: true
 ```
 
+Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
+
 ## Inputs
 
 | Input Name          | Required | Type    | Default | Description                                               |
