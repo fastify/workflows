@@ -27,18 +27,10 @@ on:
 
 jobs:
   call-reuseable-workflow:
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v1
-    with:
-      generate-coverage: true
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v2
 ```
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
-
-## Inputs
-
-| Input Name          | Required | Type    | Default | Description                                               |
-| ------------------- | -------- | ------- | ------- | --------------------------------------------------------- |
-| `generate-coverage` | false    | boolean | `false` | Set to `true` to generate coverage and send to Coveralls. |
 
 ## Acknowledgements
 
