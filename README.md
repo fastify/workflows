@@ -32,6 +32,33 @@ jobs:
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
 
+## Linter workflow
+
+In this repo you will find a [linter workflow](.github/workflows/linter-ci.yml) that you can use accross the majority of plugins.
+
+__Example:__ running the [linter workflow](.github/workflows/linter-ci.yml) first and then the [basic workflow](.github/workflows/plugins-ci.yml)
+
+```yml
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+
+jobs:
+  linter:
+    uses: fastify/workflows/.github/workflows/linter-ci.yml@v2
+  call-reuseable-workflow:
+    needs: linter
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v2
+```
+
 ## Acknowledgements
 
 This project is kindly sponsored by:
