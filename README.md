@@ -32,7 +32,7 @@ jobs:
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
 
-## Linter workflow
+### Linter workflow
 
 In this repo you will find a [linter workflow](.github/workflows/linter-ci.yml) that you can use accross the majority of plugins.
 
