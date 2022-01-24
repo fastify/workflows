@@ -32,11 +32,11 @@ jobs:
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
 
-### Linter workflow
+### Enable workflow Linter job
 
-In this repo you will find a [linter workflow](.github/workflows/linter-ci.yml) that you can use accross the majority of plugins.
+By setting the `lint` value to `true` when using the [basic workflow](.github/workflows/plugins-ci.yml) the CI will first run the linter job.
 
-__Example:__ running the [linter workflow](.github/workflows/linter-ci.yml) first and then the [basic workflow](.github/workflows/plugins-ci.yml)
+__Example:__ running the linter job first with the [basic workflow](.github/workflows/plugins-ci.yml)
 
 ```yml
 name: CI
@@ -52,11 +52,10 @@ on:
       - '*.md'
 
 jobs:
-  linter:
-    uses: fastify/workflows/.github/workflows/linter-ci.yml@v2
   call-reuseable-workflow:
-    needs: linter
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v2
+    with:
+      lint: true
 ```
 
 ## Acknowledgements
