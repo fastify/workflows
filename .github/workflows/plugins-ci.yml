@@ -2,55 +2,36 @@ name: Plugin CI
 
 on:
   workflow_call:
-    inputs:
-      lint:
-        description: 'Set to true to run linting scripts.'
-        required: false
-        type: boolean
 
 jobs:
   linter:
-    if: inputs.lint == true
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 16
-
       - name: Install Dependencies
         run: npm i --ignore-scripts
-
       - name: Lint code
-        run: npm run lint
+        run: npm run lint --if-present
 
   test:
     needs: linter
-    if: ${{ always() }}
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         node-version: [10, 12, 14, 16]
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
-      - name: Stop on linter job failure
-        if: ${{ needs.linter.result == 'failure' }}
-        run: exit 1
-
       - uses: actions/checkout@v2
-
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
       - name: Install Dependencies
         run: npm i --ignore-scripts
-
       - name: Run Tests
         run: npm test
 
