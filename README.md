@@ -34,7 +34,8 @@ Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) fo
 
 ### Enable workflow Linter job
 
-By setting the `lint` value to `true` when using the [basic workflow](.github/workflows/plugins-ci.yml) the CI will first run the linter job.
+By setting the `lint` option to `true` when using the [basic workflow](.github/workflows/plugins-ci.yml) the CI will first run the linter job once.
+
 
 __Example:__ running the linter job first with the [basic workflow](.github/workflows/plugins-ci.yml)
 
