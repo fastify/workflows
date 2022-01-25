@@ -52,7 +52,7 @@ on:
       - '*.md'
 
 jobs:
-  call-reuseable-workflow:
+  test:
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v2
     with:
       lint: true
