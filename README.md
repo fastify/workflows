@@ -125,7 +125,7 @@ jobs:
 
 By setting the `node-versions` option you can customize the versions of Node.js of your test matrix strategy.
 
-`node-versions` must be a string containing an array of versions. E.g.: `[14, 16]` or `[14.x, 16.x]`...
+`node-versions` must be a string containing an array of versions. E.g.: `[14, 16]` or `["14.x", "16.x"]`...
 
 By default, this option is set to `[10, 12, 14, 16]`.
 
