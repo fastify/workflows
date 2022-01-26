@@ -32,6 +32,33 @@ jobs:
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
 
+### Enable workflow Linter job
+
+By setting the `lint` option to `true` when using the [basic workflow](.github/workflows/plugins-ci.yml) the CI will first run the linter job once.
+
+
+__Example:__ running the linter job first with the [basic workflow](.github/workflows/plugins-ci.yml)
+
+```yml
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+
+jobs:
+  test:
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v2
+    with:
+      lint: true
+```
+
 ## Acknowledgements
 
 This project is kindly sponsored by:
