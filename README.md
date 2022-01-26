@@ -93,7 +93,7 @@ jobs:
       lint-script: 'custom' # will result in: `npm run custom` instead of the default `npm run lint`
 ```
 
-### - `test-script`: customize the lint script name
+### - `test-script`: customize the test script name
 
 By setting the `test-script` option you can customize the script name that will be run by the test job.
 
