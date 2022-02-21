@@ -1,0 +1,16 @@
+{
+  "name": "@fastify/workflows",
+  "version": "2.1.0",
+  "description": "Reusable workflows for use in the Fastify organization",
+  "scripts": {
+  },
+  "keywords": [
+    "workflows",
+    "github action"
+  ],
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
