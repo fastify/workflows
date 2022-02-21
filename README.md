@@ -36,8 +36,7 @@ Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) fo
 
 By setting the `lint` option to `true` when using the [basic workflow](.github/workflows/plugins-ci.yml) the CI will first run the linter job once.
 
-
-__Example:__ running the linter job first with the [basic workflow](.github/workflows/plugins-ci.yml)
+**Example:** running the linter job first with the [basic workflow](.github/workflows/plugins-ci.yml)
 
 ```yml
 name: CI
@@ -58,6 +57,13 @@ jobs:
     with:
       lint: true
 ```
+
+## Inputs
+
+| Input Name            | Required | Type    | Default | Description                                                                        |
+| --------------------- | -------- | ------- | ------- | ---------------------------------------------------------------------------------- |
+| `auto-merge-exclude`  | false    | string  | `fastify`      | Provide a comma separated list of packages that you do not want to be auto-merged. |
+| `lint`                | false    | boolean | `false` | Set to `true` to run the `lint` script in a repository's `package.json`.           |
 
 ## Acknowledgements
 

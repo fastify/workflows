@@ -3,6 +3,11 @@ name: Plugin CI
 on:
   workflow_call:
     inputs:
+      auto-merge-exclude:
+        description: 'A comma separated list of packages that you do not want to be auto-merged.'
+        required: false
+        default: 'fastify'
+        type: string
       lint:
         description: 'Set to true to run linting scripts.'
         required: false
@@ -57,5 +62,6 @@ jobs:
     steps:
       - uses: fastify/github-action-merge-dependabot@v3
         with:
+          exclude: ${{ inputs.auto-merge-exclude }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           target: minor
