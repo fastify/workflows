@@ -2,6 +2,12 @@ name: Plugin CI - MySQL
 
 on:
   workflow_call:
+    inputs:
+      auto-merge-excludes:
+        description: 'A comma separated list of packages that you do not want to be auto-merged.'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   test:
@@ -49,5 +55,6 @@ jobs:
     steps:
       - uses: fastify/github-action-merge-dependabot@v3
         with:
+          excludes: ${{ inputs.auto-merge-excludes }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           target: minor
