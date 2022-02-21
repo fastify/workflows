@@ -3,7 +3,7 @@ name: Plugin CI - PostgreSQL
 on:
   workflow_call:
     inputs:
-      auto-merge-excludes:
+      auto-merge-exclude:
         description: 'A comma separated list of packages that you do not want to be auto-merged.'
         required: false
         type: string
@@ -65,6 +65,6 @@ jobs:
     steps:
       - uses: fastify/github-action-merge-dependabot@v3
         with:
-          excludes: ${{ inputs.auto-merge-excludes }}
+          exclude: ${{ inputs.auto-merge-exclude }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           target: minor
