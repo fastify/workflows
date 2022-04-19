@@ -57,4 +57,4 @@ jobs:
         with:
           exclude: ${{ inputs.auto-merge-exclude }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          target: minor
+          target: major
