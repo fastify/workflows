@@ -1,0 +1,9 @@
+version: 2
+updates:
+    - package-ecosystem: github-actions
+      commit-message:
+          include: scope
+          prefix: build
+      directory: /
+      schedule:
+          interval: monthly

@@ -11,6 +11,9 @@ on:
 
 jobs:
   test:
+    permissions:
+      contents: read
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -68,4 +71,4 @@ jobs:
         with:
           exclude: ${{ inputs.auto-merge-exclude }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          target: minor
+          target: major

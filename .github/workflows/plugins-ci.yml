@@ -16,6 +16,8 @@ on:
 
 jobs:
   linter:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Skip lint
@@ -38,6 +40,8 @@ jobs:
   test:
     needs: linter
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
     strategy:
       matrix:
         node-version: [10, 12, 14, 16]
