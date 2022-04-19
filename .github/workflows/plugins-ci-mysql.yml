@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14, 16]
+        node-version: [14, 16, 18]
         os: [macos-latest, ubuntu-latest, windows-latest]
         db: [mysql:8.0]
 
