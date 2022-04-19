@@ -23,7 +23,7 @@ jobs:
       - name: Skip lint
         if: ${{ inputs.lint == false}}
         run: exit 0
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         if: ${{ inputs.lint == true}}
       - name: Use Node.js
         if: ${{ inputs.lint == true}}
@@ -47,7 +47,7 @@ jobs:
         node-version: [10, 12, 14, 16]
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
