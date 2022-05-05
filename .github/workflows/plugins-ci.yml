@@ -44,7 +44,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [10, 12, 14, 16]
+        node-version: [14, 16, 18]
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v3
