@@ -27,7 +27,7 @@ on:
 
 jobs:
   call-reuseable-workflow:
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v2
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v3
 ```
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
@@ -53,7 +53,7 @@ on:
 
 jobs:
   test:
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v2
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v3
     with:
       lint: true
 ```
