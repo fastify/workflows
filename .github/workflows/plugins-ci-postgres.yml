@@ -61,6 +61,9 @@ jobs:
         run: npm test
 
   automerge:
+    if: >
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.user.login == 'dependabot[bot]'
     needs: test
     permissions:
       pull-requests: write
