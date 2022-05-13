@@ -32,7 +32,7 @@ jobs:
     strategy:
       matrix:
         node-version: [14, 16, 18]
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         db: [mysql:8.0]
 
     name: Node.js ${{ matrix.node }} - ${{ matrix.db }}
