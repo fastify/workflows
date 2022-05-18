@@ -65,7 +65,7 @@ jobs:
       matrix:
         node-version: [14, 16, 18]
         os: [ubuntu-latest]
-        db: [postgres:11-alpine]
+        db: ['postgres:11-alpine']
 
     services:
       postgres:
