@@ -54,7 +54,7 @@ jobs:
 
       - name: Install dependencies
         if: ${{ inputs.lint == true}}
-        run: npm i --ignore-scripts
+        run: npm i
 
       - name: Lint code
         if: ${{ inputs.lint == true}}
