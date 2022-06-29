@@ -65,7 +65,7 @@ jobs:
           node-version: 16
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.2
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d # v2.2.2
         if: ${{ inputs.pnpm == true}}
         with:
           version: ${{ inputs.pnpm-version}}
@@ -100,7 +100,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.2
+        uses: pnpm/action-setup@10693b3829bf86eb2572aef5f3571dcf5ca9287d # v2.2.2
         if: ${{ inputs.pnpm == true}}
         with:
           version: ${{ inputs.pnpm-version}}
