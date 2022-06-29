@@ -13,6 +13,16 @@ on:
         required: false
         default: false
         type: boolean
+      pnpm:
+        description: 'Set to true to install pnpm.'
+        required: false
+        default: false
+        type: boolean
+      pnpm-version:
+        description: 'install pnpm version'
+        required: false
+        default: '7.4.0'
+        type: string
 
 jobs:
   dependency-review:
@@ -54,6 +64,12 @@ jobs:
         with:
           node-version: 16
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.2
+        if: ${{ inputs.pnpm == true}}
+        with:
+          version: ${{ inputs.pnpm-version}}
+
       - name: Install dependencies
         if: ${{ inputs.lint == true}}
         run: npm i --ignore-scripts
@@ -82,6 +98,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.2
+        if: ${{ inputs.pnpm == true}}
+        with:
+          version: ${{ inputs.pnpm-version}}
 
       - name: Install dependencies
         run: npm i --ignore-scripts
