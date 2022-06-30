@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      coveralls:
+        description: 'enable coveralls'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   dependency-review:
@@ -88,6 +93,26 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Coveralls Parallel
+        if: inputs.coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ matrix.os }}-${{ matrix.node-version }}
+          parallel: true
+
+  coveralls-finish:
+    name: Coveralls Finished Report
+    if: inputs.coveralls
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
 
   automerge:
     name: Automerge Dependabot PRs

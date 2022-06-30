@@ -60,10 +60,11 @@ jobs:
 
 ## Inputs
 
-| Input Name            | Required | Type    | Default | Description                                                                        |
-| --------------------- | -------- | ------- | ------- | ---------------------------------------------------------------------------------- |
-| `auto-merge-exclude`  | false    | string  | `fastify`      | Provide a comma separated list of packages that you do not want to be auto-merged. |
-| `lint`                | false    | boolean | `false` | Set to `true` to run the `lint` script in a repository's `package.json`.           |
+| Input Name           | Required | Type    | Default   | Description                                                                        |
+| -------------------- | -------- | ------- | --------- | ---------------------------------------------------------------------------------- |
+| `auto-merge-exclude` | false    | string  | `fastify` | Provide a comma separated list of packages that you do not want to be auto-merged. |
+| `lint`               | false    | boolean | `false`   | Set to `true` to run the `lint` script in a repository's `package.json`.           |
+| `coveralls`          | false    | boolean | `false`   | enable coveralls.                                                                  |
 
 ## Acknowledgements
 
