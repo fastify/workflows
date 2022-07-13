@@ -29,8 +29,8 @@ jobs:
 
       - name: Dependency review
         uses: actions/dependency-review-action@v2
-        with:
-          allow-licenses: MIT, ISC, BSD-3-Clause, BSD-2-Clause
+        # with:
+        #   allow-licenses: MIT, ISC, BSD-3-Clause, BSD-2-Clause
 
   linter:
     name: Lint Code
