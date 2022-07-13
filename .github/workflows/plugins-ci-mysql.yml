@@ -8,6 +8,11 @@ on:
         required: false
         default: 'fastify'
         type: string
+      license-check:
+        description: 'Check Licenses'
+        required: false
+        type: boolean
+        default: false
       lint:
         description: 'Set to true to run linting scripts.'
         required: false
@@ -30,30 +35,57 @@ jobs:
       - name: Dependency review
         uses: actions/dependency-review-action@v1
 
-  linter:
-    name: Lint Code
+  license-check:
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.license-check == true
+    name: Check Licenses
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - name: Skip lint
-        if: ${{ inputs.lint == false}}
-        run: exit 0
+      - uses: actions/checkout@v3.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup node 16
+        uses: actions/setup-node@v3.1.1
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Install License-Checker globally
+        run: npm i -g license-checker --ignore-scripts
+
+      - name: Check Licenses
+        run: npx license-checker --production --onlyAllow="MIT;ISC;BSD-3-Clause;BSD-2-Clause"
+
+  linter:
+    name: Lint Code
+    needs: license-check
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.lint == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
 
       - name: Check out repo
-        if: ${{ inputs.lint == true}}
         uses: actions/checkout@v3
         with:
           persist-credentials: false
 
       - name: Setup Node
-        if: ${{ inputs.lint == true}}
         uses: actions/setup-node@v3
         with:
           node-version: 16
 
       - name: Install dependencies
-        if: ${{ inputs.lint == true}}
         run: npm i --ignore-scripts
 
       - name: Lint code
@@ -62,6 +94,7 @@ jobs:
 
   test:
     name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
+    needs: linter
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
