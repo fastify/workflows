@@ -9,7 +9,7 @@ on:
         default: 'fastify'
         type: string
       license-check:
-        description: 'Check Licenses'
+        description: 'Check licenses'
         required: false
         type: boolean
         default: false
@@ -45,14 +45,14 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3
         with:
           persist-credentials: false
 
-      - name: Setup node 16
-        uses: actions/setup-node@v3.1.1
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: lts/*
 
       - name: Install dependencies
         run: npm i --ignore-scripts
