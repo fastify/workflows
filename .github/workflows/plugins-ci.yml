@@ -62,7 +62,6 @@ jobs:
 
   linter:
     name: Lint Code
-    needs: license-check
     if: >
       !failure() &&
       !cancelled() &&
@@ -89,7 +88,6 @@ jobs:
 
   test:
     name: Test
-    needs: linter
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
