@@ -17,7 +17,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: lts/*
       - uses: nearform/optic-release-automation-action@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
