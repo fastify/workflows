@@ -63,6 +63,7 @@ jobs:
 | Input Name            | Required | Type    | Default | Description                                                                        |
 | --------------------- | -------- | ------- | ------- | ---------------------------------------------------------------------------------- |
 | `auto-merge-exclude`  | false    | string  | `fastify`      | Provide a comma separated list of packages that you do not want to be auto-merged. |
+| `license-check`       | false    | boolean | `false` | Set to `true` to check that a repository's production dependencies use permissive licenses: BSD-2-Clause, BSD-3-Clause, MIT, or ISC. |
 | `lint`                | false    | boolean | `false` | Set to `true` to run the `lint` script in a repository's `package.json`.           |
 
 ## Acknowledgements
