@@ -58,7 +58,7 @@ jobs:
         run: npm i --ignore-scripts
 
       - name: Check Licenses
-        run: npx license-checker --production --onlyAllow="BSD-2-Clause;BSD-3-Clause;ISC;MIT;Apache-2.0"
+        run: npx license-checker --production --onlyAllow="0BSD;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT"
 
   linter:
     name: Lint Code
