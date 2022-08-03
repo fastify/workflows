@@ -9,12 +9,12 @@ on:
         default: 'fastify'
         type: string
       license-check:
-        description: 'Check licenses'
+        description: 'Check licenses.'
         required: false
         type: boolean
         default: false
       license-check-allowed-additional:
-        description: 'Additional allowed licenses (separator ;)'
+        description: 'A semicolon seperate list of additional licenses to allow.'
         required: false
         type: string
         default: ''
