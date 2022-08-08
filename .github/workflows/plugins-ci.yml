@@ -8,6 +8,11 @@ on:
         required: false
         default: 'fastify'
         type: string
+      database:
+        description: 'Possible values: none, postgres, mongo, mysql, redis'
+        required: false
+        default: none
+        type: string
       license-check:
         description: 'Check licenses'
         required: false
@@ -93,6 +98,10 @@ jobs:
 
   test:
     name: Test
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.database == 'none'
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
@@ -100,6 +109,178 @@ jobs:
       matrix:
         node-version: [14, 16, 18]
         os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Run tests
+        run: npm test
+
+  test-postgres:
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.database == 'postgres'
+    name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+        os: [ubuntu-latest]
+        db: ['postgres:11-alpine']
+
+    services:
+      postgres:
+        image: ${{ matrix.db }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - '5432:5432'
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: CI environment setup
+        run: >
+          npm i node-gyp 
+          sudo apt-get install -yqq libpq-dev postgresql-client
+          chmod 600 .pgpass
+          PGPASSFILE=.pgpass psql -h localhost -p ${{
+          job.services.postgres.ports[5432] }} -d postgres -c 'CREATE TABLE
+          users(id serial PRIMARY KEY, username VARCHAR (50) NOT NULL);' -U
+          postgres
+
+      - name: Run tests
+        run: npm test
+
+  test-mongo:
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.database == 'mongo'
+    name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+        os: [ubuntu-latest]
+        db: ['mongo:5.0.0']
+
+    services:
+      mongo:
+        image: ${{ matrix.db }}
+        ports:
+          - '27017:27017'
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Run tests
+        run: npm test
+
+  test-mysql:
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.database == 'myssql'
+    name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+        os: [ubuntu-latest]
+        db: ['mysql:8.0']
+
+    services:
+      mysql:
+        image: ${{ matrix.db }}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+          MYSQL_DATABASE: mysql
+        ports:
+          - '3306:3306'
+        options: >-
+          --health-cmd="mysqladmin ping" --health-interval=10s
+          --health-timeout=5s --health-retries=3
+  
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Run tests
+        run: npm test
+
+  test-redis:
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.database == 'redis'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+        redis-tag: [5, 6, 7]
+    services:
+      redis:
+        image: redis:${{ matrix.redis-tag }}
+        ports:
+          - '6379:6379'
+        options: '--entrypoint redis-server'
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
@@ -122,7 +303,12 @@ jobs:
     if: >
         github.event_name == 'pull_request' &&
         github.event.pull_request.user.login == 'dependabot[bot]'
-    needs: test
+    needs:
+      - test
+      - test-postgres
+      - test-mongo
+      - test-mysql
+      - test-redis
     permissions:
       pull-requests: write
       contents: write
