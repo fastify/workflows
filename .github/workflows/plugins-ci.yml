@@ -309,6 +309,12 @@ jobs:
         (needs.test-redis.result == 'success' || needs.test-redis.result == 'skipped') &&
         github.event_name == 'pull_request' &&
         github.event.pull_request.user.login == 'dependabot[bot]'
+    needs:
+      - test
+      - test-postgres
+      - test-mongo
+      - test-mysql
+      - test-redis
     permissions:
       pull-requests: write
       contents: write
