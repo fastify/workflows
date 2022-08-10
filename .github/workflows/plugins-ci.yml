@@ -301,14 +301,14 @@ jobs:
   automerge:
     name: Automerge Dependabot PRs
     if: >
+        always() &&
+        (needs.test.result == 'success' || needs.test.result == 'skipped') &&
+        (needs.test-postgres.result == 'success' || needs.test-postgres.result == 'skipped') &&
+        (needs.test-mongo.result == 'success' || needs.test-mongo.result == 'skipped') &&
+        (needs.test-mysql.result == 'success' || needs.test-mysql.result == 'skipped') &&
+        (needs.test-redis.result == 'success' || needs.test-redis.result == 'skipped') &&
         github.event_name == 'pull_request' &&
         github.event.pull_request.user.login == 'dependabot[bot]'
-    needs:
-      - test
-      - test-postgres
-      - test-mongo
-      - test-mysql
-      - test-redis
     permissions:
       pull-requests: write
       contents: write
