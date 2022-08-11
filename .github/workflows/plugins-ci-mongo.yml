@@ -100,11 +100,11 @@ jobs:
       matrix:
         node-version: [14, 16, 18]
         os: [ubuntu-latest]
-        db: ['mongo:5.0.0']
+        db: ['5.0.0']
 
     services:
       mongo:
-        image: ${{ matrix.db }}
+        image: mongo:${{ matrix.db }}
         ports:
           - '27017:27017'
 
