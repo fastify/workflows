@@ -100,7 +100,7 @@ jobs:
       matrix:
         node-version: [14, 16, 18]
         os: [ubuntu-latest]
-        db: ['5.0.0']
+        db: [5]
 
     services:
       mongo:
