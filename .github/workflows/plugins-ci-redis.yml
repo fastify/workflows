@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       auto-merge-exclude:
-        description: 'A comma separated list of packages that you do not want to be auto-merged.'
+        description: 'A semicolon seperated list of packages that you do not want to be auto-merged.'
         required: false
         default: 'fastify'
         type: string
@@ -14,7 +14,7 @@ on:
         type: boolean
         default: false
       license-check-allowed-additional:
-        description: 'A semicolon seperate list of additional licenses to allow.'
+        description: 'A semicolon seperated list of additional licenses to allow.'
         required: false
         type: string
         default: ''
