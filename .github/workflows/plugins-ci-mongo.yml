@@ -14,7 +14,7 @@ on:
         type: boolean
         default: false
       license-check-allowed-additional:
-        description: 'Additional allowed licenses (separator ;)'
+        description: 'A semicolon seperate list of additional licenses to allow.'
         required: false
         type: string
         default: ''
