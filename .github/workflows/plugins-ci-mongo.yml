@@ -1,0 +1,143 @@
+name: Plugin CI - MongoDB
+
+on:
+  workflow_call:
+    inputs:
+      auto-merge-exclude:
+        description: 'A comma separated list of packages that you do not want to be auto-merged.'
+        required: false
+        default: 'fastify'
+        type: string
+      license-check:
+        description: 'Check licenses'
+        required: false
+        type: boolean
+        default: false
+      license-check-allowed-additional:
+        description: 'A semicolon seperate list of additional licenses to allow.'
+        required: false
+        type: string
+        default: ''
+      lint:
+        description: 'Set to true to run linting scripts.'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@v2
+
+  license-check:
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.license-check == true
+    name: Check Licenses
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Check Licenses
+        run: ${{ format('npx license-checker --production --onlyAllow="0BSD;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;{0}"', inputs.license-check-allowed-additional) }}
+
+  linter:
+    name: Lint Code
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.lint == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Lint code
+        run: npm run lint
+
+  test:
+    name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+        os: [ubuntu-latest]
+        db: [5]
+
+    services:
+      mongo:
+        image: mongo:${{ matrix.db }}
+        ports:
+          - '27017:27017'
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Run tests
+        run: npm test
+
+  automerge:
+    name: Automerge Dependabot PRs
+    if: >
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.user.login == 'dependabot[bot]'
+    needs: test
+    permissions:
+      pull-requests: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3
+        with:
+          exclude: ${{ inputs.auto-merge-exclude }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          target: major
