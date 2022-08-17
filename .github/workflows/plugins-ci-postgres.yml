@@ -127,7 +127,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm i --ignore-scripts
+        run: npm i
 
       - name: CI environment setup
         run: >
