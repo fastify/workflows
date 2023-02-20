@@ -69,7 +69,7 @@ jobs:
 
 ## Acknowledgements
 
-This project is kindly sponsored by:
+Past sponsors:
 
 -   [Yeovil District Hospital NHS Foundation Trust](https://yeovilhospital.co.uk/)
 
