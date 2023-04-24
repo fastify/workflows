@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 16, 18]
+        node-version: [14, 16, 18, 20]
         db: [5, 6, 7]
     services:
       redis:
