@@ -12,13 +12,13 @@ jobs:
     strategy:
       matrix:
         node-version: [16, 18, 20]
-        pnpm-version: [8]
         os: [ubuntu-latest]
+        pnpm-version: [8]
         # pnpm@8 does not support Node.js 14 so include it separately
         include:
           - node-version: 14
-            pnpm-version: 7
             os: ubuntu-latest
+            pnpm-version: 7
 
     steps:
       - name: Check out repo
