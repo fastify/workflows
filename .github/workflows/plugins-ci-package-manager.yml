@@ -18,6 +18,7 @@ jobs:
         include:
           - node-version: 14
             pnpm-version: 7
+            os: ubuntu-latest
 
     steps:
       - name: Check out repo
@@ -28,7 +29,7 @@ jobs:
       - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}    
+          node-version: ${{ matrix.node-version }}
 
       - name: Install with pnpm
         uses: pnpm/action-setup@v2
@@ -59,13 +60,12 @@ jobs:
       - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }} 
-      
+          node-version: ${{ matrix.node-version }}
+
       - name: Install with Yarn
         run: |
           curl -o- -L https://yarnpkg.com/install.sh | bash
           yarn install --ignore-engines
-
 
       - name: Install dependencies
         run: yarn
