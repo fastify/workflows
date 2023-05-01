@@ -1,0 +1,74 @@
+name: Plugin CI - Package Managers
+
+on:
+  workflow_call:
+
+jobs:
+  pnpm:
+    name: pnpm
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+        os: [ubuntu-latest]
+        pnpm-version: [8]
+        # pnpm@8 does not support Node.js 14 so include it separately
+        include:
+          - node-version: 14
+            os: ubuntu-latest
+            pnpm-version: 7
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install with pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ matrix.pnpm-version }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm run test
+
+  yarn:
+    name: Yarn
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        node-version: [14, 16, 18, 20]
+        os: [ubuntu-latest]
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install with Yarn
+        run: |
+          curl -o- -L https://yarnpkg.com/install.sh | bash
+          yarn install --ignore-engines
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run tests
+        run: yarn run test
