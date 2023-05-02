@@ -1,6 +1,6 @@
 {
   "name": "@fastify/workflows",
-  "version": "3.6.3",
+  "version": "3.7.0",
   "description": "Reusable workflows for use in the Fastify organization",
   "private": true,
   "scripts": {},
