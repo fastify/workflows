@@ -98,6 +98,9 @@ jobs:
       matrix:
         node-version: [14, 16, 18, 20]
         db: [5, 6, 7]
+        exclude:
+          os: windows-latest
+          node-version: 14
     services:
       redis:
         image: redis:${{ matrix.db }}
