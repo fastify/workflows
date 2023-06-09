@@ -101,8 +101,8 @@ jobs:
         node-version: [14, 16, 18, 20]
         os: [macos-latest, ubuntu-latest, windows-latest]
         exclude:
-          os: windows-latest
-          node-version: 14
+          - os: windows-latest
+            node-version: 14
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
