@@ -1,0 +1,20 @@
+name: Validate workflows files
+on: [ push, pull_request ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install action-validator with asdf
+        uses: asdf-vm/actions/install@v2
+        with:
+          tool_versions: |
+            action-validator 0.5.1
+
+      - name: Lint Workflows
+        run: |
+          find .github/workflows -type f \( -iname \*.yaml -o -iname \*.yml \) \
+            | xargs -I {} action-validator --verbose {}
