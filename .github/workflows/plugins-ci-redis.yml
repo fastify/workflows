@@ -4,17 +4,22 @@ on:
   workflow_call:
     inputs:
       auto-merge-exclude:
-        description: 'A semicolon seperated list of packages that you do not want to be auto-merged.'
+        description: 'A semicolon separated list of packages that you do not want to be auto-merged.'
         required: false
         default: 'fastify'
         type: string
+      fail-fast:
+        description: 'Set to false to disable the fail-fast strategy.'
+        required: false
+        default: true
+        type: boolean
       license-check:
-        description: 'Check licenses'
+        description: 'Check licenses.'
         required: false
         type: boolean
         default: false
       license-check-allowed-additional:
-        description: 'A semicolon seperated list of additional licenses to allow.'
+        description: 'A semicolon separated list of additional licenses to allow.'
         required: false
         type: string
         default: ''
@@ -22,11 +27,6 @@ on:
         description: 'Set to true to run linting scripts.'
         required: false
         default: false
-        type: boolean
-      fail-fast:
-        description: 'Set the fail-fast strategey setting.'
-        required: false
-        default: true
         type: boolean
 
 jobs:
