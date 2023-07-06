@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      fail-fast:
+        description: 'Set the fail-fast strategey setting.'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   dependency-review:
@@ -97,6 +102,7 @@ jobs:
     permissions:
       contents: read
     strategy:
+      fail-fast: ${{ inputs.fail-fast }}
       matrix:
         node-version: [14, 16, 18, 20]
         os: [ubuntu-latest]

@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      fail-fast:
+        description: 'Set the fail-fast strategey setting.'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   dependency-review:
@@ -95,6 +100,7 @@ jobs:
     name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: ${{ inputs.fail-fast }}
       matrix:
         node-version: [14, 16, 18, 20]
         db: [5, 6, 7]
