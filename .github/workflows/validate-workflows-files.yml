@@ -23,7 +23,7 @@ jobs:
         uses: asdf-vm/actions/install@v2
         with:
           tool_versions: |
-            action-validator 0.5.1
+            action-validator 0.5.3
 
       - name: Lint Workflows
         run: |
