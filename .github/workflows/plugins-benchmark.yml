@@ -1,0 +1,110 @@
+name: Benchmark PR
+
+on:
+  workflow_call:
+    inputs:
+      npm-script:
+        type: string
+        default: benchmark
+        required: false
+
+jobs:
+  benchmark:
+    if: ${{ github.event.label.name == 'benchmark' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      PR-BENCH-16: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_16 }}
+      PR-BENCH-18: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_18 }}
+      PR-BENCH-20: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_20 }}
+      DEFAULT-BENCH-16: ${{ steps.benchmark-default.outputs.BENCH_RESULT_16 }}
+      DEFAULT-BENCH-18: ${{ steps.benchmark-default.outputs.BENCH_RESULT_18 }}
+      DEFAULT-BENCH-20: ${{ steps.benchmark-default.outputs.BENCH_RESULT_20 }}
+
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          ref: ${{github.event.pull_request.head.sha}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install
+        run: |
+          npm install --ignore-scripts
+
+      - name: Run benchmark
+        id: benchmark-pr
+        run: |
+          echo 'BENCH_RESULT_${{matrix.node-version}}<<EOF' >> $GITHUB_OUTPUT
+          npm run --silent ${{inputs.npm-script}} >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+      # master benchmark
+      - uses: actions/checkout@v3
+        with:
+          ref: refs/heads/${{ github.event.repository.default_branch }}
+
+      - name: Install
+        run: |
+          npm install --ignore-scripts
+
+      - name: Run benchmark
+        id: benchmark-default
+        run: |
+          echo 'BENCH_RESULT_${{matrix.node-version}}<<EOF' >> $GITHUB_OUTPUT
+          npm run --silent ${{inputs.npm-script}} >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  output-benchmark:
+    needs: 
+      - benchmark
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            **Node**: 16
+            **${{github.event.pull_request.head.ref}}**:
+            ```
+            ${{ needs.benchmark.outputs.PR-BENCH-16 }}
+            ```
+            **${{ github.event.repository.default_branch }}**:
+            ```
+            ${{ needs.benchmark.outputs.DEFAULT-BENCH-16 }}
+            ```
+
+            ---
+            
+            **Node**: 18
+            **${{github.event.pull_request.head.ref}}**:
+            ```
+            ${{ needs.benchmark.outputs.PR-BENCH-18 }}
+            ```
+            **${{ github.event.repository.default_branch }}**:
+            ```
+            ${{ needs.benchmark.outputs.DEFAULT-BENCH-18 }}
+            ```
+            
+            ---
+            
+            **Node**: 20
+            **${{github.event.pull_request.head.ref}}**:
+            ```
+            ${{ needs.benchmark.outputs.PR-BENCH-20 }}
+            ```
+            **${{ github.event.repository.default_branch }}**:
+            ```
+            ${{ needs.benchmark.outputs.DEFAULT-BENCH-20 }}
+            ```
