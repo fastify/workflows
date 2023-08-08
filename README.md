@@ -8,7 +8,7 @@ GitHub [introduced reusable workflows](https://github.blog/2021-11-29-github-act
 
 For more information, including limitations, [see the GitHub Docs](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows).
 
-## CI-Workflows
+## CI workflows
 ### Usage
 
 ```yml
@@ -66,9 +66,9 @@ jobs:
 | `license-check-allowed-additional` | false      | string  |           | Provide a semicolon separated list of SPDX-license identifiers that you want to additionally allow. |
 | `lint`                             | false      | boolean | `false`   | Set to `true` to run the `lint` script in a repository's `package.json`.           |
 
-## Benchmark PR-Workflow
+## Benchmark PR workflow
 
-The benchmark workflow expects pull_request or pull_request_target events. Most common use is to run the benchmarks when a `benchmark` label is added to the PR.
+The benchmark workflow expects `pull_request` or `pull_request_target` events. A common use for this workflow is to run benchmarks when a `benchmark` label is added to the PR.
 
 ### Usage
 
@@ -108,7 +108,7 @@ jobs:
 ### Inputs
 | Input Name                         | Required   | Type    | Default     | Description                                                                        |
 | ---------------------------------- | ---------- | ------- | ----------- | ---------------------------------------------------------------------------------- |
-| `npm-script`                       | false      | string  | `benchmark` | Provide the name of the npm script to be run                                       |
+| `npm-script`                       | false      | string  | `benchmark` | Provide the name of the npm script to run                                       |
 
 
 ## Acknowledgements
