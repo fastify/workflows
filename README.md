@@ -52,6 +52,9 @@ on:
 
 jobs:
   test:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v3
     with:
       lint: true
