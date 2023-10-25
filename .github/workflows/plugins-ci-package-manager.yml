@@ -11,7 +11,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [16, 18, 20]
+        node-version: [16, 18, 20, 21]
         os: [ubuntu-latest]
         pnpm-version: [8]
         # pnpm@8 does not support Node.js 14 so include it separately
