@@ -23,7 +23,7 @@ on:
         required: false
         default: false
         type: boolean
-      fastify-integration:
+      fastify-dependency-integration:
         description: 'Set to true to run fastify tests with the (proposed) changes.'
         required: false
         default: false
@@ -125,13 +125,13 @@ jobs:
       - name: Run tests
         run: npm test
 
-  fastify-integration:
+  fastify-dependency-integration:
     name: Test Fastify Integration
     runs-on: ubuntu-latest
     if: >
       !failure() &&
       !cancelled() &&
-      inputs.fastify-integration == true
+      inputs.fastify-dependency-integration == true
     permissions:
       contents: read
     steps:
@@ -161,11 +161,14 @@ jobs:
   automerge:
     name: Automerge Dependabot PRs
     if: >
+        always() &&
+        needs.test.result == 'success' &&
+        (needs.fastify-dependency-integration.result == 'success' || needs.fastify-dependency-integration.result == 'skipped') &&
         github.event_name == 'pull_request' &&
         github.event.pull_request.user.login == 'dependabot[bot]'
     needs: 
       - test
-      - fastify-integration
+      - fastify-dependency-integration
     permissions:
       pull-requests: write
       contents: write
