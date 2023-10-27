@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      fastify-dependency-integration:
+        description: 'Set to true to run fastify tests with the (proposed) changes.'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   dependency-review:
@@ -120,12 +125,50 @@ jobs:
       - name: Run tests
         run: npm test
 
+  fastify-dependency-integration:
+    name: Test Fastify Integration
+    runs-on: ubuntu-latest
+    if: >
+      !failure() &&
+      !cancelled() &&
+      inputs.fastify-dependency-integration == true
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm i --ignore-scripts
+
+      - name: Test Fastify Integration
+        run: |
+          npm link &&
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          git clone https://github.com/fastify/fastify.git --depth 1 &&
+          cd fastify &&
+          npm i --ignore-scripts &&
+          npm link $PACKAGE_NAME &&
+          npm run unit
+
   automerge:
     name: Automerge Dependabot PRs
     if: >
+        always() &&
+        needs.test.result == 'success' &&
+        (needs.fastify-dependency-integration.result == 'success' || needs.fastify-dependency-integration.result == 'skipped') &&
         github.event_name == 'pull_request' &&
         github.event.pull_request.user.login == 'dependabot[bot]'
-    needs: test
+    needs: 
+      - test
+      - fastify-dependency-integration
     permissions:
       pull-requests: write
       contents: write
