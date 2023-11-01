@@ -100,7 +100,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [14, 16, 18, 20, 21]
+        node-version: [18, 20, 21]
         os: [ubuntu-latest]
         db: ['mysql:8.0']
 

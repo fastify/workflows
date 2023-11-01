@@ -26,7 +26,7 @@ on:
 
 jobs:
   ci:
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v3
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v4
 ```
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
@@ -55,7 +55,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v3
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v4
     with:
       lint: true
 ```

@@ -103,11 +103,8 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [14, 16, 18, 20, 21]
+        node-version: [18, 20, 21]
         os: [macos-latest, ubuntu-latest, windows-latest]
-        exclude:
-          - os: windows-latest
-            node-version: 14
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
@@ -166,7 +163,7 @@ jobs:
         (needs.fastify-dependency-integration.result == 'success' || needs.fastify-dependency-integration.result == 'skipped') &&
         github.event_name == 'pull_request' &&
         github.event.pull_request.user.login == 'dependabot[bot]'
-    needs: 
+    needs:
       - test
       - fastify-dependency-integration
     permissions:
