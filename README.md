@@ -120,6 +120,13 @@ Past sponsors:
 
 -   [Yeovil District Hospital NHS Foundation Trust](https://yeovilhospital.co.uk/)
 
+## Contributing
+
+Contributions are welcome, and any help is greatly appreciated!
+
+See [the contributing guide](./CONTRIBUTING.md) for details on how to get started.
+Please adhere to Fastify's [Code of Conduct](https://github.com/fastify/.github/blob/main/CODE_OF_CONDUCT.md) when contributing.
+
 ## License
 
 Licensed under [MIT](./LICENSE).
