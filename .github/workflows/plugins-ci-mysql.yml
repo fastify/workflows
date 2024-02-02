@@ -38,7 +38,7 @@ jobs:
           persist-credentials: false
 
       - name: Dependency review
-        uses: actions/dependency-review-action@v3
+        uses: actions/dependency-review-action@v4
 
   license-check:
     if: >
@@ -63,7 +63,7 @@ jobs:
         run: npm i --ignore-scripts
 
       - name: Check Licenses
-        run: ${{ format('npx license-checker --production --summary --onlyAllow="0BSD;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;{0}"', inputs.license-check-allowed-additional) }}
+        run: ${{ format('npx license-checker --production --summary --onlyAllow="0BSD;Apache-2.0;BlueOak-1.0.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;{0}"', inputs.license-check-allowed-additional) }}
 
   linter:
     name: Lint Code
