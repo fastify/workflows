@@ -41,9 +41,9 @@ jobs:
       PR-BENCH-18: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_18 }}
       PR-BENCH-20: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_20 }}
       PR-BENCH-21: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_21 }}
-      BASE-BENCH-18: ${{ steps.benchmark-default.outputs.BENCH_RESULT_18 }}
-      BASE-BENCH-20: ${{ steps.benchmark-default.outputs.BENCH_RESULT_20 }}
-      BASE-BENCH-21: ${{ steps.benchmark-default.outputs.BENCH_RESULT_21 }}
+      BASE-BENCH-18: ${{ steps.benchmark-base.outputs.BENCH_RESULT_18 }}
+      BASE-BENCH-20: ${{ steps.benchmark-base.outputs.BENCH_RESULT_20 }}
+      BASE-BENCH-21: ${{ steps.benchmark-base.outputs.BENCH_RESULT_21 }}
 
     strategy:
       matrix:
@@ -83,7 +83,7 @@ jobs:
           npm install --ignore-scripts
 
       - name: Run benchmark ${{ inputs.base-repo }}@${{ inputs.base-ref }}
-        id: benchmark-default
+        id: benchmark-base
         run: |
           echo 'BENCH_RESULT_${{matrix.node-version}}<<EOF' >> $GITHUB_OUTPUT
           npm run --silent ${{inputs.npm-script}} >> $GITHUB_OUTPUT
