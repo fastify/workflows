@@ -7,27 +7,27 @@ on:
         type: string
         default: benchmark
         required: false
-      source-repo: 
+      pr-repo: 
         type: string
         default: ${{ github.event.pull_request.head.repo.full_name }}
         required: false
-      source-sha:
+      pr-sha:
         type: string
         default: ${{ github.event.pull_request.head.sha }}
         required: false
-      source-ref:
+      pr-ref:
         type: string
         default: ${{ github.event.pull_request.head.ref }}
         required: false
-      target-repo:
+      base-repo:
         type: string
         default: ${{ github.event.pull_request.base.repo.full_name }}
         required: false
-      target-sha:
+      base-sha:
         type: string
         default: ${{ github.event.pull_request.base.sha }}
         required: false
-      target-ref:
+      base-ref:
         type: string
         default: ${{ github.event.pull_request.base.ref }}
         required: false
@@ -41,46 +41,48 @@ jobs:
       PR-BENCH-18: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_18 }}
       PR-BENCH-20: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_20 }}
       PR-BENCH-21: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_21 }}
-      TARGET-BENCH-18: ${{ steps.benchmark-default.outputs.BENCH_RESULT_18 }}
-      TARGET-BENCH-20: ${{ steps.benchmark-default.outputs.BENCH_RESULT_20 }}
-      TARGET-BENCH-21: ${{ steps.benchmark-default.outputs.BENCH_RESULT_21 }}
+      BASE-BENCH-18: ${{ steps.benchmark-default.outputs.BENCH_RESULT_18 }}
+      BASE-BENCH-20: ${{ steps.benchmark-default.outputs.BENCH_RESULT_20 }}
+      BASE-BENCH-21: ${{ steps.benchmark-default.outputs.BENCH_RESULT_21 }}
 
     strategy:
       matrix:
         node-version: [18, 20, 21]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
-          ref: ${{ inputs.source-sha }}
-          repository: ${{ inputs.source-repo }}
+          ref: ${{ inputs.pr-sha }}
+          repository: ${{ inputs.pr-repo }}
 
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install
+      - name: Install ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
         run: |
           npm install --ignore-scripts
 
-      - name: Run benchmark
+      - name: Run benchmark ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
         id: benchmark-pr
         run: |
           echo 'BENCH_RESULT_${{matrix.node-version}}<<EOF' >> $GITHUB_OUTPUT
           npm run --silent ${{inputs.npm-script}} >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
-      - uses: actions/checkout@v4
+      - name: Checkout ${{ inputs.base-repo }}@${{ inputs.base-ref }}
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
-          ref: ${{ inputs.target-sha }}
-          repository: ${{ inputs.target-repo }}
+          ref: ${{ inputs.base-sha }}
+          repository: ${{ inputs.base-repo }}
 
-      - name: Install
+      - name: Install ${{ inputs.base-repo }}@${{ inputs.base-ref }}
         run: |
           npm install --ignore-scripts
 
-      - name: Run benchmark
+      - name: Run benchmark ${{ inputs.base-repo }}@${{ inputs.base-ref }}
         id: benchmark-default
         run: |
           echo 'BENCH_RESULT_${{matrix.node-version}}<<EOF' >> $GITHUB_OUTPUT
@@ -100,35 +102,35 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
             **Node**: 18
-            ${{ inputs.source-repo }}@${{ inputs.source-sha }} (${{ inputs.source-ref }}):
+            ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```
             ${{ needs.benchmark.outputs.PR-BENCH-18 }}
             ```
-            ${{ inputs.target-repo }}@${{ inputs.target-sha }} (${{ inputs.target-ref }}):
+            ${{ inputs.base-repo }}@${{ inputs.base-sha }} (${{ inputs.base-ref }}):
             ```
-            ${{ needs.benchmark.outputs.TARGET-BENCH-18 }}
+            ${{ needs.benchmark.outputs.BASE-BENCH-18 }}
             ```
             
             ---
             
             **Node**: 20
-            ${{ inputs.source-repo }}@${{ inputs.source-sha }} (${{ inputs.source-ref }}):
+            ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```
             ${{ needs.benchmark.outputs.PR-BENCH-20 }}
             ```
-            ${{ inputs.target-repo }}@${{ inputs.target-sha }} (${{ inputs.target-ref }}):
+            ${{ inputs.base-repo }}@${{ inputs.base-sha }} (${{ inputs.base-ref }}):
             ```
-            ${{ needs.benchmark.outputs.TARGET-BENCH-20 }}
+            ${{ needs.benchmark.outputs.BASE-BENCH-20 }}
             ```
             
             ---
             
             **Node**: 21
-            ${{ inputs.source-repo }}@${{ inputs.source-sha }} (${{ inputs.source-ref }}):
+            ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```
             ${{ needs.benchmark.outputs.PR-BENCH-21 }}
             ```
-            ${{ inputs.target-repo }}@${{ inputs.target-sha }} (${{ inputs.target-ref }}):
+            ${{ inputs.base-repo }}@${{ inputs.base-sha }} (${{ inputs.base-ref }}):
             ```
-            ${{ needs.benchmark.outputs.TARGET-BENCH-21 }}
+            ${{ needs.benchmark.outputs.BASE-BENCH-21 }}
             ```
