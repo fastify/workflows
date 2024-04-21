@@ -7,6 +7,11 @@ on:
         type: string
         default: benchmark
         required: false
+      node-versions:
+        description: 'A comma-separated list of Node versions to test against.'
+        required: false
+        default: '["18", "20", "21"]'
+        type: string
 
 jobs:
   benchmark:
@@ -24,7 +29,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 21]
+        node-version: ${{ fromJson(inputs.node-versions) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
         with:

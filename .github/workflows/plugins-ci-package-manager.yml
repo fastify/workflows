@@ -2,6 +2,12 @@ name: Plugin CI - Package Managers
 
 on:
   workflow_call:
+    inputs:
+      node-versions:
+        description: 'A comma-separated list of Node versions to test against.'
+        required: false
+        default: '["18", "20", "21"]'
+        type: string
 
 jobs:
   pnpm:
@@ -11,8 +17,8 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [18, 20, 21]
-        os: [ubuntu-latest]
+        node-version: ${{ fromJson(inputs.node-versions) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
         pnpm-version: [8]
 
     steps:
@@ -44,8 +50,8 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [18, 20, 21]
-        os: [ubuntu-latest]
+        node-version: ${{ fromJson(inputs.node-versions) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - name: Check out repo
         uses: actions/checkout@v4

@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      node-versions:
+        description: 'A comma-separated list of Node versions to test against.'
+        required: false
+        default: '["18", "20", "21"]'
+        type: string
 
 jobs:
   dependency-review:
@@ -96,7 +101,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20, 21]
+        node-version: ${{ fromJson(inputs.node-versions) }}
+        os: [macos-latest, ubuntu-latest, windows-latest]
         db: [5, 6, 7]
     services:
       redis:
