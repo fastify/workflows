@@ -101,7 +101,7 @@ jobs:
         id: remove-label
         with:
           route: DELETE /repos/{repo}/issues/{issue_number}/labels/{name}
-          repo: ${{ github.event.pull_request.head.repo.full_name }}
+          repo: ${{ github.event.pull_request.base.repo.full_name }}
           issue_number: ${{ github.event.pull_request.number }}
           name: benchmark
         env:
