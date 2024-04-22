@@ -29,7 +29,7 @@ on:
         default: false
         type: boolean
       node-versions:
-        description: 'A stringified JSON array that specifies the Node.js versions on which the job should run.'
+        description: 'A JSON array that specifies the Node.js versions on which the job should run.'
         required: false
         default: '["18", "20", "21"]'
         type: string

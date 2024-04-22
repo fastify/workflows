@@ -32,7 +32,7 @@ on:
         default: ${{ github.event.pull_request.base.ref }}
         required: false
       node-versions:
-        description: 'A stringified JSON array that specifies the Node.js versions on which the job should run.'
+        description: 'A JSON array that specifies the Node.js versions on which the job should run.'
         required: false
         default: '["18", "20", "21"]'
         type: string
@@ -40,7 +40,7 @@ on:
 jobs:
   benchmark:
     if: ${{ github.event.label.name == 'benchmark' }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: read
     outputs:
@@ -54,6 +54,7 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
+        os: [ubuntu-latest]
     steps:
       - name: Checkout ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
         uses: actions/checkout@v4
