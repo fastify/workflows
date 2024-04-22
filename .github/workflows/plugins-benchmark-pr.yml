@@ -54,7 +54,6 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
-        os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - name: Checkout ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
         uses: actions/checkout@v4
@@ -97,8 +96,7 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
 
   output-benchmark:
-    needs:
-      - benchmark
+    needs: benchmark
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

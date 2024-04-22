@@ -98,13 +98,12 @@ jobs:
 
   test:
     name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
-        os: [macos-latest, ubuntu-latest, windows-latest]
         db: ['postgres:11-alpine']
 
     services:

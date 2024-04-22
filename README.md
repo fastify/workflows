@@ -92,8 +92,7 @@ jobs:
 
   remove-label:
     if: "always()"
-    needs: 
-      - benchmark
+    needs: benchmark
     runs-on: ubuntu-latest
     steps:
       - name: Remove benchmark label
