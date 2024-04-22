@@ -32,7 +32,7 @@ on:
         default: ${{ github.event.pull_request.base.ref }}
         required: false
       node-versions:
-        description: 'A comma-separated list of Node versions to test against.'
+        description: 'A stringified JSON array that specifies the Node.js versions on which the job should run.'
         required: false
         default: '["18", "20", "21"]'
         type: string
