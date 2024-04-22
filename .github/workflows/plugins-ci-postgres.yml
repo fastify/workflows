@@ -105,7 +105,6 @@ jobs:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
         db: ['postgres:11-alpine']
-
     services:
       postgres:
         image: ${{ matrix.db }}
