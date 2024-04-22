@@ -40,7 +40,7 @@ on:
 jobs:
   benchmark:
     if: ${{ github.event.label.name == 'benchmark' }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
@@ -54,7 +54,6 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
-        os: [ubuntu-latest]
     steps:
       - name: Checkout ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
         uses: actions/checkout@v4
