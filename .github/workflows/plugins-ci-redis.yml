@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      node-versions:
+        description: 'A JSON array that specifies the Node.js versions on which the job should run.'
+        required: false
+        default: '["18", "20", "21"]'
+        type: string
 
 jobs:
   dependency-review:
@@ -96,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20, 21]
+        node-version: ${{ fromJson(inputs.node-versions) }}
         db: [5, 6, 7]
     services:
       redis:

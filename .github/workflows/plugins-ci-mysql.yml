@@ -23,6 +23,11 @@ on:
         required: false
         default: false
         type: boolean
+      node-versions:
+        description: 'A JSON array that specifies the Node.js versions on which the job should run.'
+        required: false
+        default: '["18", "20", "21"]'
+        type: string
 
 jobs:
   dependency-review:
@@ -95,15 +100,13 @@ jobs:
 
   test:
     name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
       matrix:
-        node-version: [18, 20, 21]
-        os: [ubuntu-latest]
+        node-version: ${{ fromJson(inputs.node-versions) }}
         db: ['mysql:8.0']
-
     services:
       mysql:
         image: ${{ matrix.db }}

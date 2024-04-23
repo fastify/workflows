@@ -28,6 +28,11 @@ on:
         required: false
         default: false
         type: boolean
+      node-versions:
+        description: 'A JSON array that specifies the Node.js versions on which the job should run.'
+        required: false
+        default: '["18", "20", "21"]'
+        type: string
 
 jobs:
   dependency-review:
@@ -103,7 +108,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [18, 20, 21]
+        node-version: ${{ fromJson(inputs.node-versions) }}
         os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - name: Check out repo

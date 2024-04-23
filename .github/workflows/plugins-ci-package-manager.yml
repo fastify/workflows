@@ -2,6 +2,12 @@ name: Plugin CI - Package Managers
 
 on:
   workflow_call:
+    inputs:
+      node-versions:
+        description: 'A JSON array that specifies the Node.js versions on which the job should run.'
+        required: false
+        default: '["18", "20", "21"]'
+        type: string
 
 jobs:
   pnpm:
@@ -11,7 +17,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [18, 20, 21]
+        node-version: ${{ fromJson(inputs.node-versions) }}
         os: [ubuntu-latest]
         pnpm-version: [8]
 
@@ -44,7 +50,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        node-version: [18, 20, 21]
+        node-version: ${{ fromJson(inputs.node-versions) }}
         os: [ubuntu-latest]
     steps:
       - name: Check out repo
