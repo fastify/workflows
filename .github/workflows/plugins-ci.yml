@@ -110,6 +110,11 @@ jobs:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
         os: [macos-latest, ubuntu-latest, windows-latest]
+        exclude:
+          - os: macos-latest
+            node-version: 14
+          - os: macos-latest
+            node-version: 16
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
