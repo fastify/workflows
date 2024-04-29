@@ -6,20 +6,18 @@ on:
 jobs:
   pnpm:
     name: pnpm
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
       matrix:
         node-version: [16, 18, 20, 21]
-        os: [ubuntu-latest]
         pnpm-version: [8]
         # pnpm@8 does not support Node.js 14 so include it separately
         include:
           - node-version: 14
             os: ubuntu-latest
             pnpm-version: 7
-
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
@@ -44,13 +42,12 @@ jobs:
 
   yarn:
     name: Yarn
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
       matrix:
         node-version: [14, 16, 18, 20]
-        os: [ubuntu-latest]
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
