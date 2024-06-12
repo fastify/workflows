@@ -1,0 +1,35 @@
+name: release
+
+on:
+  workflow_call:
+    inputs:
+      semver:
+        description: "The semver to use"
+        required: true
+        type: string
+      tag:
+        description: "The npm tag"
+        required: false
+        type: string
+    secrets:
+      ORG_NPM_TOKEN:
+        required: true
+      ORG_MEMBER_OPTIC_TOKEN:
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: nearform/optic-release-automation-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          npm-token: ${{ secrets.ORG_NPM_TOKEN }}
+          optic-token: ${{ secrets.ORG_MEMBER_OPTIC_TOKEN }}
+          semver: ${{ inputs.semver }}
+          npm-tag: ${{ inputs.tag }}
+          commit-message: "Bumped {version}"
