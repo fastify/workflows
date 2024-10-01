@@ -8,6 +8,11 @@ on:
         required: false
         default: 'fastify'
         type: string
+      elasticsearch-version:
+        description: 'The version of Elasticsearch to use.'
+        required: true
+        default: '8.15.2'
+        type: string
       license-check:
         description: 'Check licenses'
         required: false
@@ -104,7 +109,7 @@ jobs:
         node-version: ${{ fromJson(inputs.node-versions) }}
     services:
       elasticsearch:
-        image: elasticsearch:8.15.2
+        image: elasticsearch:${{ inputs.elasticsearch-version }}
         ports:
           - '9200:9200'
           - '9300:9300'
