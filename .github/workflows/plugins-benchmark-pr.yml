@@ -44,12 +44,12 @@ jobs:
     permissions:
       contents: read
     outputs:
-      PR-BENCH-18: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_18 }}
       PR-BENCH-20: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_20 }}
-      PR-BENCH-21: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_21 }}
-      BASE-BENCH-18: ${{ steps.benchmark-base.outputs.BENCH_RESULT_18 }}
+      PR-BENCH-22: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_22 }}
+      PR-BENCH-23: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_23 }}
       BASE-BENCH-20: ${{ steps.benchmark-base.outputs.BENCH_RESULT_20 }}
-      BASE-BENCH-21: ${{ steps.benchmark-base.outputs.BENCH_RESULT_21 }}
+      BASE-BENCH-22: ${{ steps.benchmark-base.outputs.BENCH_RESULT_22 }}
+      BASE-BENCH-23: ${{ steps.benchmark-base.outputs.BENCH_RESULT_23 }}
 
     strategy:
       matrix:
@@ -106,18 +106,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            **Node**: 18
-            ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
-            ```
-            ${{ needs.benchmark.outputs.PR-BENCH-18 }}
-            ```
-            ${{ inputs.base-repo }}@${{ inputs.base-sha }} (${{ inputs.base-ref }}):
-            ```
-            ${{ needs.benchmark.outputs.BASE-BENCH-18 }}
-            ```
-            
-            ---
-            
             **Node**: 20
             ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```
@@ -130,12 +118,24 @@ jobs:
             
             ---
             
-            **Node**: 21
+            **Node**: 22
             ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```
-            ${{ needs.benchmark.outputs.PR-BENCH-21 }}
+            ${{ needs.benchmark.outputs.PR-BENCH-22 }}
             ```
             ${{ inputs.base-repo }}@${{ inputs.base-sha }} (${{ inputs.base-ref }}):
             ```
-            ${{ needs.benchmark.outputs.BASE-BENCH-21 }}
+            ${{ needs.benchmark.outputs.BASE-BENCH-22 }}
+            ```
+            
+            ---
+            
+            **Node**: 23
+            ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
+            ```
+            ${{ needs.benchmark.outputs.PR-BENCH-23 }}
+            ```
+            ${{ inputs.base-repo }}@${{ inputs.base-sha }} (${{ inputs.base-ref }}):
+            ```
+            ${{ needs.benchmark.outputs.BASE-BENCH-23 }}
             ```
