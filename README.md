@@ -26,7 +26,7 @@ on:
 
 jobs:
   ci:
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v4
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5
 ```
 
 Included in this repo is a [basic workflow](.github/workflows/plugins-ci.yml) for use across the majority of plugins, as well as variants with service containers.
@@ -55,7 +55,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v4
+    uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5
     with:
       lint: true
 ```
@@ -87,7 +87,7 @@ on:
 jobs:
   benchmark:
     if: ${{ github.event.label.name == 'benchmark' }}
-    uses: fastify/workflows/.github/workflows/plugins-benchmark-pr.yml@main
+    uses: fastify/workflows/.github/workflows/plugins-benchmark-pr.yml@v5
     with:
       npm-script: bench
 
