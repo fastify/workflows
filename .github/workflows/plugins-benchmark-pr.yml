@@ -7,7 +7,7 @@ on:
         type: string
         default: benchmark
         required: false
-      pr-repo: 
+      pr-repo:
         type: string
         default: ${{ github.event.pull_request.head.repo.full_name }}
         required: false
@@ -115,9 +115,9 @@ jobs:
             ```
             ${{ needs.benchmark.outputs.BASE-BENCH-20 }}
             ```
-            
+
             ---
-            
+
             **Node**: 22
             ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```
@@ -127,9 +127,9 @@ jobs:
             ```
             ${{ needs.benchmark.outputs.BASE-BENCH-22 }}
             ```
-            
+
             ---
-            
+
             **Node**: 23
             ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```

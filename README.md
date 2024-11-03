@@ -81,7 +81,7 @@ name: Benchmark PR
 
 on:
   pull_request_target:
-    types: 
+    types:
       - labeled
 
 jobs:
