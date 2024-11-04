@@ -33,6 +33,11 @@ on:
         required: false
         default: '["20", "22"]'
         type: string
+      check-disallow-code-generation-from-strings:
+        description: 'Enables --disallow-code-generation-from-strings flag for Node.js'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   dependency-review:
@@ -110,12 +115,23 @@ jobs:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
         os: [macos-latest, ubuntu-latest, windows-latest]
+        disallow-code-generation-from-strings: ${{ inputs.check-disallow-code-generation-from-strings == true && ['true', 'false'] || ['false'] }}
         exclude:
           - os: macos-latest
             node-version: 14
           - os: macos-latest
             node-version: 16
     steps:
+      - name: Set node flags
+        id: node-flags
+        shell: bash
+        run: |
+          if [ "${{ matrix.disallow-code-generation-from-strings }}" = "true" ]; then
+            echo "flags=--disallow-code-generation-from-strings" >> $GITHUB_OUTPUT
+          else
+            echo "flags=" >> $GITHUB_OUTPUT
+          fi
+
       - name: Check out repo
         uses: actions/checkout@v4
         with:
@@ -130,7 +146,7 @@ jobs:
         run: npm i --ignore-scripts
 
       - name: Run tests
-        run: npm test
+        run: NODE_OPTIONS="${{ steps.node-flags.outputs.flags }}" npm test
 
   fastify-dependency-integration:
     name: Test Fastify Integration
