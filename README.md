@@ -120,7 +120,7 @@ jobs:
 
 Past sponsors:
 
--   [Yeovil District Hospital NHS Foundation Trust](https://yeovilhospital.co.uk/)
+-   [Yeovil Hospital](https://somersetft.nhs.uk/yeovilhospital/)
 
 ## Contributing
 
