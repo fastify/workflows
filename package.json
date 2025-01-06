@@ -9,6 +9,36 @@
     "github action"
   ],
   "license": "MIT",
+  "author": "Frazer Smith <frazer.dev@icloud.com>",
+  "contributors": [
+    {
+      "name": "Matteo Collina",
+      "email": "hello@matteocollina.com"
+    },
+    {
+      "name": "Manuel Spigolon",
+      "email": "behemoth89@gmail.com"
+    },
+    {
+      "name": "Aras Abbasi",
+      "email": "aras.abbasi@gmail.com"
+    },
+    {
+      "name": "Gürgün Dayıoğlu",
+      "email": "hey@gurgun.day",
+      "url": "https://heyhey.to/G"
+    }
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/fastify"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/fastify"
+    }
+  ],
   "dependencies": {},
   "devDependencies": {}
 }
