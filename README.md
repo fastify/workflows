@@ -116,7 +116,7 @@ jobs:
 | `node-versions`                      | false      | string  | `'["20", "22"]'`   | Provide A JSON array that specifies the Node.js versions on which the job should run.           |
 
 
-## Acknowledgements
+## Acknowledgments
 
 Past sponsors:
 
