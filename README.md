@@ -16,6 +16,10 @@ name: CI
 
 on:
   push:
+    branches:
+     - main
+     - next
+     - 'v*'
     paths-ignore:
       - 'docs/**'
       - '*.md'
@@ -25,7 +29,10 @@ on:
       - '*.md'
 
 jobs:
-  ci:
+  test:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5
 ```
 
@@ -42,6 +49,10 @@ name: CI
 
 on:
   push:
+    branches:
+     - main
+     - next
+     - 'v*'
     paths-ignore:
       - 'docs/**'
       - '*.md'
