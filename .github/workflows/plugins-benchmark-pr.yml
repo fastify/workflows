@@ -56,13 +56,13 @@ jobs:
         node-version: ${{ fromJson(inputs.node-versions) }}
     steps:
       - name: Checkout ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
           ref: ${{ inputs.pr-sha }}
           repository: ${{ inputs.pr-repo }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           check-latest: true
           node-version: ${{ matrix.node-version }}
@@ -79,7 +79,7 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
 
       - name: Checkout ${{ inputs.base-repo }}@${{ inputs.base-ref }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
           ref: ${{ inputs.base-sha }}
@@ -103,7 +103,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v3
+        uses: thollander/actions-comment-pull-request@65f9e5c9a1f2cd378bd74b2e057c9736982a8e74 # v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
