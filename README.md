@@ -33,6 +33,9 @@ permissions:
 
 jobs:
   test:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5
 ```
 
@@ -66,6 +69,9 @@ permissions:
 
 jobs:
   test:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: fastify/workflows/.github/workflows/plugins-ci.yml@v5
     with:
       lint: true
