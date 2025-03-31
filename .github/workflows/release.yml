@@ -10,6 +10,9 @@ on:
   pull_request:
     types: [closed]
 
+permissions:
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest

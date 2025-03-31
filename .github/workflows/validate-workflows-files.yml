@@ -9,6 +9,9 @@ on:
     paths:
       - '.github/workflows/*.yml'
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
