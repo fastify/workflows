@@ -79,14 +79,15 @@ jobs:
 
 ### Inputs
 
-| Input Name                         | Required   | Type    | Default   | Description                                                                        |
-| ---------------------------------- | ---------- | ------- | --------- | ---------------------------------------------------------------------------------- |
-| `auto-merge-exclude`                 | false      | string  | `fastify` | Provide a semicolon separated list of packages that you do not want to be auto-merged. |
-| `fastify-dependency-integration`     | false      | boolean | `false`   | Set to `true` to run fastify tests with the (proposed) changes. |
-| `license-check`                      | false      | boolean | `false`   | Set to `true` to check that a repository's production dependencies use permissive licenses: 0BSD, Apache-2.0, BSD-2-Clause, BSD-3-Clause, MIT, or ISC. |
-| `license-check-allowed-additional`   | false      | string  |           | Provide a semicolon separated list of SPDX-license identifiers that you want to additionally allow. |
-| `lint`                               | false      | boolean | `false`   | Set to `true` to run the `lint` script in a repository's `package.json`.           |
-| `node-versions`                      | false      | string  | `'["20", "22"]'`   | Provide A JSON array that specifies the Node.js versions on which the job should run.           |
+| Input Name                                    | Required | Type    | Default          | Description                                                                                                                                            |
+|-----------------------------------------------|----------|---------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `auto-merge-exclude`                          | false    | string  | `fastify`        | Provide a semicolon separated list of packages that you do not want to be auto-merged.                                                                 |
+| `fastify-dependency-integration`              | false    | boolean | `false`          | Set to `true` to run fastify tests with the (proposed) changes.                                                                                        |
+| `license-check`                               | false    | boolean | `false`          | Set to `true` to check that a repository's production dependencies use permissive licenses: 0BSD, Apache-2.0, BSD-2-Clause, BSD-3-Clause, MIT, or ISC. |
+| `license-check-allowed-additional`            | false    | string  |                  | Provide a semicolon separated list of SPDX-license identifiers that you want to additionally allow.                                                    |
+| `lint`                                        | false    | boolean | `false`          | Set to `true` to run the `lint` script in a repository's `package.json`.                                                                               |
+| `node-versions`                               | false    | string  | `'["20", "22"]'` | Provide A JSON array that specifies the Node.js versions on which the job should run.                                                                  |
+| `check-disallow-code-generation-from-strings` | false    | boolean | `false`          | Enables --disallow-code-generation-from-strings flag for Node.js                                                                                       |
 
 ## Benchmark PR workflow
 
