@@ -22,11 +22,11 @@ jobs:
       pull-requests: write
     steps:
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           check-latest: true
           node-version: lts/*
-      - uses: nearform/optic-release-automation-action@v4
+      - uses: nearform/optic-release-automation-action@7d145f626bcf31f7cfaa340a871e0a7e01a43105 # v4.9.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           semver: ${{ github.event.inputs.semver }}
