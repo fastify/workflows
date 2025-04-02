@@ -26,7 +26,7 @@ jobs:
         with:
           check-latest: true
           node-version: lts/*
-      - uses: nearform/optic-release-automation-action@7d145f626bcf31f7cfaa340a871e0a7e01a43105 # v4.9.0
+      - uses: nearform/optic-release-automation-action@3267a9565800cafcc768ddd074267b1e9c1a1ce7 # v4.10.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           semver: ${{ github.event.inputs.semver }}
