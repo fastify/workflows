@@ -93,7 +93,7 @@ jobs:
           node-version: lts/*
 
       - name: Install dependencies
-        run: npm i
+        run: npm i --ignore-scripts
 
       - name: Lint code
         run: npm run lint

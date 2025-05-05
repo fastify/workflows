@@ -37,7 +37,7 @@ jobs:
           version: ${{ matrix.pnpm-version }}
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --ignore-scripts
 
       - name: Run tests
         run: pnpm run test
@@ -65,7 +65,7 @@ jobs:
       - name: Install with Yarn
         run: |
           curl -o- -L https://yarnpkg.com/install.sh | bash
-          yarn install --ignore-engines
+          yarn install --ignore-engines --ignore-scripts
 
       - name: Install dependencies
         run: yarn
