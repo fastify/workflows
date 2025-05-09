@@ -46,10 +46,10 @@ jobs:
     outputs:
       PR-BENCH-20: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_20 }}
       PR-BENCH-22: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_22 }}
-      PR-BENCH-23: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_23 }}
+      PR-BENCH-24: ${{ steps.benchmark-pr.outputs.BENCH_RESULT_24 }}
       BASE-BENCH-20: ${{ steps.benchmark-base.outputs.BENCH_RESULT_20 }}
       BASE-BENCH-22: ${{ steps.benchmark-base.outputs.BENCH_RESULT_22 }}
-      BASE-BENCH-23: ${{ steps.benchmark-base.outputs.BENCH_RESULT_23 }}
+      BASE-BENCH-24: ${{ steps.benchmark-base.outputs.BENCH_RESULT_24 }}
 
     strategy:
       matrix:
@@ -131,12 +131,12 @@ jobs:
 
             ---
 
-            **Node**: 23
+            **Node**: 24
             ${{ inputs.pr-repo }}@${{ inputs.pr-sha }} (${{ inputs.pr-ref }}):
             ```
-            ${{ needs.benchmark.outputs.PR-BENCH-23 }}
+            ${{ needs.benchmark.outputs.PR-BENCH-24 }}
             ```
             ${{ inputs.base-repo }}@${{ inputs.base-sha }} (${{ inputs.base-ref }}):
             ```
-            ${{ needs.benchmark.outputs.BASE-BENCH-23 }}
+            ${{ needs.benchmark.outputs.BASE-BENCH-24 }}
             ```
