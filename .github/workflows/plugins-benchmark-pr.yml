@@ -41,6 +41,8 @@ jobs:
   benchmark:
     if: ${{ github.event.label.name == 'benchmark' }}
     runs-on: ubuntu-latest
+    env:
+      NPM_SCRIPT: ${{ inputs.npm-script }}
     permissions:
       contents: read
     outputs:
@@ -73,10 +75,12 @@ jobs:
 
       - name: Run benchmark ${{ inputs.pr-repo }}@${{ inputs.pr-ref }}
         id: benchmark-pr
+        env:
+          NODE_VERSION: ${{ matrix.node-version }}
         run: |
-          echo 'BENCH_RESULT_${{matrix.node-version}}<<EOF' >> $GITHUB_OUTPUT
-          npm run --silent ${{inputs.npm-script}} >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          echo "BENCH_RESULT_${NODE_VERSION}<<EOF" >> "$GITHUB_OUTPUT"
+          npm run --silent "$NPM_SCRIPT" >> "$GITHUB_OUTPUT"
+          echo 'EOF' >> "$GITHUB_OUTPUT"
 
       - name: Checkout ${{ inputs.base-repo }}@${{ inputs.base-ref }}
         uses: actions/checkout@v4
@@ -91,10 +95,12 @@ jobs:
 
       - name: Run benchmark ${{ inputs.base-repo }}@${{ inputs.base-ref }}
         id: benchmark-base
+        env:
+          NODE_VERSION: ${{ matrix.node-version }}
         run: |
-          echo 'BENCH_RESULT_${{matrix.node-version}}<<EOF' >> $GITHUB_OUTPUT
-          npm run --silent ${{inputs.npm-script}} >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          echo "BENCH_RESULT_${NODE_VERSION}<<EOF" >> "$GITHUB_OUTPUT"
+          npm run --silent "$NPM_SCRIPT" >> "$GITHUB_OUTPUT"
+          echo 'EOF' >> "$GITHUB_OUTPUT"
 
   output-benchmark:
     needs: benchmark
