@@ -78,9 +78,9 @@ jobs:
         env:
           NODE_VERSION: ${{ matrix.node-version }}
         run: |
-          echo 'BENCH_RESULT_${NODE_VERSION}<<EOF' >> $GITHUB_OUTPUT
-          npm run --silent "$NPM_SCRIPT" >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          echo 'BENCH_RESULT_${NODE_VERSION}<<EOF' >> "$GITHUB_OUTPUT"
+          npm run --silent "$NPM_SCRIPT" >> "$GITHUB_OUTPUT"
+          echo 'EOF' >> "$GITHUB_OUTPUT"
 
       - name: Checkout ${{ inputs.base-repo }}@${{ inputs.base-ref }}
         uses: actions/checkout@v4
@@ -98,9 +98,9 @@ jobs:
         env:
           NODE_VERSION: ${{ matrix.node-version }}
         run: |
-          echo 'BENCH_RESULT_${NODE_VERSION}<<EOF' >> $GITHUB_OUTPUT
-          npm run --silent "$NPM_SCRIPT" >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          echo 'BENCH_RESULT_${NODE_VERSION}<<EOF' >> "$GITHUB_OUTPUT"
+          npm run --silent "$NPM_SCRIPT" >> "$GITHUB_OUTPUT"
+          echo 'EOF' >> "$GITHUB_OUTPUT"
 
   output-benchmark:
     needs: benchmark

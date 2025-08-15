@@ -172,7 +172,7 @@ jobs:
           git clone https://github.com/fastify/fastify.git --depth 1 &&
           cd fastify &&
           npm i --ignore-scripts &&
-          npm link $PACKAGE_NAME &&
+          npm link "$PACKAGE_NAME" &&
           npm run unit
 
   automerge:
