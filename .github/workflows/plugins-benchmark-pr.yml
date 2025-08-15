@@ -78,7 +78,7 @@ jobs:
         env:
           NODE_VERSION: ${{ matrix.node-version }}
         run: |
-          echo 'BENCH_RESULT_${NODE_VERSION}<<EOF' >> "$GITHUB_OUTPUT"
+          echo "BENCH_RESULT_${NODE_VERSION}<<EOF" >> "$GITHUB_OUTPUT"
           npm run --silent "$NPM_SCRIPT" >> "$GITHUB_OUTPUT"
           echo 'EOF' >> "$GITHUB_OUTPUT"
 
@@ -98,7 +98,7 @@ jobs:
         env:
           NODE_VERSION: ${{ matrix.node-version }}
         run: |
-          echo 'BENCH_RESULT_${NODE_VERSION}<<EOF' >> "$GITHUB_OUTPUT"
+          echo "BENCH_RESULT_${NODE_VERSION}<<EOF" >> "$GITHUB_OUTPUT"
           npm run --silent "$NPM_SCRIPT" >> "$GITHUB_OUTPUT"
           echo 'EOF' >> "$GITHUB_OUTPUT"
 
