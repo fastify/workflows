@@ -69,7 +69,9 @@ jobs:
         run: npm i --ignore-scripts
 
       - name: Check Licenses
-        run: ${{ format('npx license-checker --production --summary --onlyAllow="0BSD;Apache-2.0;BlueOak-1.0.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;{0}"', inputs.license-check-allowed-additional) }}
+        env:
+          ALLOWED_ADDITIONAL: ${{ inputs.license-check-allowed-additional }}
+        run: npx license-checker --production --summary --onlyAllow="0BSD;Apache-2.0;BlueOak-1.0.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;$ALLOWED_ADDITIONAL"
 
   linter:
     name: Lint Code
@@ -136,6 +138,8 @@ jobs:
         run: npm i
 
       - name: CI environment setup
+        env:
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
         run: >
           npm i node-gyp
 
@@ -143,8 +147,7 @@ jobs:
 
           chmod 600 .pgpass
 
-          PGPASSFILE=.pgpass psql -h localhost -p ${{
-          job.services.postgres.ports[5432] }} -d postgres -c 'CREATE TABLE
+          PGPASSFILE=.pgpass psql -h localhost -p "$PGPORT" -d postgres -c 'CREATE TABLE
           users(id serial PRIMARY KEY, username VARCHAR (50) NOT NULL);' -U
           postgres
 

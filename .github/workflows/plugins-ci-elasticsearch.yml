@@ -74,8 +74,9 @@ jobs:
         run: npm i --ignore-scripts
 
       - name: Check Licenses
-        run: ${{ format('npx license-checker --production --summary --onlyAllow="0BSD;Apache-2.0;BlueOak-1.0.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;{0}"', inputs.license-check-allowed-additional) }}
-
+        env:
+          ALLOWED_ADDITIONAL: ${{ inputs.license-check-allowed-additional }}
+        run: npx license-checker --production --summary --onlyAllow="0BSD;Apache-2.0;BlueOak-1.0.0;BSD-2-Clause;BSD-3-Clause;ISC;MIT;$ALLOWED_ADDITIONAL"
   linter:
     name: Lint Code
     if: >
