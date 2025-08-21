@@ -31,7 +31,7 @@ on:
 
 jobs:
   quality-check:
-    uses: ./.github/workflows/nested/quality.yml
+    uses: ./.github/workflows/nested-quality.yml
     permissions:
       contents: read
     secrets: inherit
