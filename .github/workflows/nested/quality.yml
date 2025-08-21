@@ -1,4 +1,4 @@
-name: Plugin CI - Quality
+name: Quality
 
 # **What it does**: Runs dependency review, license checks, and linting for plugins.
 # **Why we have it**: Used by other workflows to ensure code quality and compliance.
