@@ -47,7 +47,6 @@ jobs:
 
   test:
     name: Test
-    needs: quality-check
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
@@ -84,7 +83,6 @@ jobs:
 
   fastify-dependency-integration:
     name: Test Fastify Integration
-    needs: quality-check
     runs-on: ubuntu-latest
     if: >
       !failure() &&
@@ -125,9 +123,7 @@ jobs:
         (needs.fastify-dependency-integration.result == 'success' || needs.fastify-dependency-integration.result == 'skipped') &&
         github.event_name == 'pull_request' &&
         github.event.pull_request.user.login == 'dependabot[bot]'
-    needs:
-      - test
-      - fastify-dependency-integration
+    needs: [fastify-dependency-integration, quality-check, test]
     permissions:
       pull-requests: write
       contents: write
