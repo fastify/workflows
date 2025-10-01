@@ -64,7 +64,7 @@ jobs:
           ref: ${{ inputs.pr-sha }}
           repository: ${{ inputs.pr-repo }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           check-latest: true
           node-version: ${{ matrix.node-version }}
