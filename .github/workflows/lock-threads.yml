@@ -18,6 +18,7 @@ jobs:
         uses: jsumners/lock-threads@e460dfeb36e731f3aeb214be6b0c9a9d9a67eda6 # v3.0.0
         with:
           issue-inactive-days: '90'
+          pr-inactive-days: '90'
           exclude-any-issue-labels: 'discussion,good first issue,help wanted'
           issue-comment: >
             This issue has been automatically locked since there
