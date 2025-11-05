@@ -1,0 +1,30 @@
+name: Lock Threads
+
+# **What it does**: Automatically locks inactive issues and pull requests.
+# **Why we have it**: Helps maintainers manage repository activity and reduce clutter.
+
+on:
+  workflow_call:
+
+jobs:
+  lock-threads:
+    name: Lock Threads
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Lock inactive issues and prs
+        uses: jsumners/lock-threads@e460dfeb36e731f3aeb214be6b0c9a9d9a67eda6 # v3.0.0
+        with:
+          issue-inactive-days: '90'
+          pr-inactive-days: '90'
+          exclude-any-issue-labels: 'discussion,good first issue,help wanted'
+          issue-comment: >
+            This issue has been automatically locked since there
+            has not been any recent activity after it was closed.
+            Please open a new issue for related bugs.
+          pr-comment: >
+            This pull request has been automatically locked since there
+            has not been any recent activity after it was closed.
+            Please open a new issue for related bugs.
