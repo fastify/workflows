@@ -88,51 +88,6 @@ jobs:
 | `lint`                               | false      | boolean | `false`   | Set to `true` to run the `lint` script in a repository's `package.json`.           |
 | `node-versions`                      | false      | string  | `'["20", "22", "24"]'`   | Provide A JSON array that specifies the Node.js versions on which the job should run.           |
 
-## Benchmark PR workflow
-
-The benchmark workflow expects `pull_request` or `pull_request_target` events. A common use for this workflow is to run benchmarks when a `benchmark` label is added to the PR.
-
-### Usage
-
-```yml
-name: Benchmark PR
-
-on:
-  pull_request_target:
-    types:
-      - labeled
-
-jobs:
-  benchmark:
-    if: ${{ github.event.label.name == 'benchmark' }}
-    uses: fastify/workflows/.github/workflows/plugins-benchmark-pr.yml@v5
-    with:
-      npm-script: bench
-
-  remove-label:
-    if: "always()"
-    needs: benchmark
-    runs-on: ubuntu-latest
-    steps:
-      - name: Remove benchmark label
-        uses: octokit/request-action@v2.x
-        id: remove-label
-        with:
-          route: DELETE /repos/{repo}/issues/{issue_number}/labels/{name}
-          repo: ${{ github.event.pull_request.base.repo.full_name }}
-          issue_number: ${{ github.event.pull_request.number }}
-          name: benchmark
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-### Inputs
-| Input Name                         | Required   | Type    | Default     | Description                                                                        |
-| ---------------------------------- | ---------- | ------- | ----------- | ---------------------------------------------------------------------------------- |
-| `npm-script`                       | false      | string  | `benchmark` | Provide the name of the npm script to run                                       |
-| `node-versions`                      | false      | string  | `'["20", "22", "24"]'`   | Provide A JSON array that specifies the Node.js versions on which the job should run.           |
-
-
 ## Acknowledgments
 
 Past sponsors:
