@@ -11,7 +11,7 @@ on:
       elasticsearch-version:
         description: 'The version of Elasticsearch to use.'
         required: true
-        default: '8.15.2'
+        default: '9.3.0'
         type: string
       license-check:
         description: 'Check licenses'

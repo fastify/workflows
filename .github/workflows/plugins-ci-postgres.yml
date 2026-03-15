@@ -48,7 +48,7 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
-        db: ['postgres:11-alpine']
+        db: ['postgres:18-alpine']
     services:
       postgres:
         image: ${{ matrix.db }}
