@@ -12,7 +12,7 @@ on:
         type: boolean
         default: false
       license-check-allowed-additional:
-        description: 'A semicolon seperated list of additional licenses to allow.'
+        description: 'A semicolon separated list of additional licenses to allow.'
         required: false
         type: string
         default: ''
