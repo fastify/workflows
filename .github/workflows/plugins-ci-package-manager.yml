@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
-        pnpm-version: [8]
+        pnpm-version: [10]
     steps:
       - name: Check out repo
         uses: actions/checkout@v6

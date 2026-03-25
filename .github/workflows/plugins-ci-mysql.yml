@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       auto-merge-exclude:
-        description: 'A semicolon seperated list of packages that you do not want to be auto-merged.'
+        description: 'A semicolon separated list of packages that you do not want to be auto-merged.'
         required: false
         default: 'fastify'
         type: string
@@ -14,7 +14,7 @@ on:
         type: boolean
         default: false
       license-check-allowed-additional:
-        description: 'A semicolon seperated list of additional licenses to allow.'
+        description: 'A semicolon separated list of additional licenses to allow.'
         required: false
         type: string
         default: ''
@@ -82,9 +82,9 @@ jobs:
   automerge:
     name: Automerge Dependabot PRs
     if: >
-        github.event_name == 'pull_request' &&
-        github.event.pull_request.head.repo.full_name == github.repository &&
-        github.event.pull_request.user.login == 'dependabot[bot]'
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == 'dependabot[bot]'
     needs: [quality-check, test]
     permissions:
       pull-requests: write
