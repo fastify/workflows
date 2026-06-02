@@ -1,9 +1,16 @@
 version: 2
 updates:
-    - package-ecosystem: github-actions
-      commit-message:
-          include: scope
-          prefix: build
-      directory: /
-      schedule:
-          interval: monthly
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    commit-message:
+      # Prefix all commit messages with "chore: "
+      prefix: "chore"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    allow:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    open-pull-requests-limit: 10
