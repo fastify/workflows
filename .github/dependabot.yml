@@ -5,5 +5,11 @@ updates:
           include: scope
           prefix: build
       directory: /
+      groups:
+          github-owned:
+              patterns:
+                  - "actions/*"
+                  - "github/*"
+                  - "octokit/*"
       schedule:
           interval: monthly
