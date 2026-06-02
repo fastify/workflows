@@ -34,7 +34,6 @@ jobs:
     uses: ./.github/workflows/nested-quality.yml
     permissions:
       contents: read
-    secrets: inherit
     with:
       license-check: ${{ inputs.license-check }}
       license-check-allowed-additional: ${{ inputs.license-check-allowed-additional }}
