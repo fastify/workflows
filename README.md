@@ -4,9 +4,9 @@ Reusable workflows for use in the Fastify organization.
 
 ## Intro
 
-GitHub [introduced reusable workflows](https://github.blog/2021-11-29-github-actions-reusable-workflows-is-generally-available/) on 2021-11-29 which, as the name suggests, are workflows that can be referenced across the entirety of GitHub. A reusable workflow is called by using the `uses` keyword in another workflow.
+GitHub [introduced reusable workflows](https://github.blog/news-insights/product-news/github-actions-reusable-workflows-is-generally-available/) on 2021-11-29 which, as the name suggests, are workflows that can be referenced across the entirety of GitHub. A reusable workflow is called by using the `uses` keyword in another workflow.
 
-For more information, including limitations, [see the GitHub Docs](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows).
+For more information, including limitations, [see the GitHub Docs](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
 
 ## CI workflows
 ### Usage
@@ -92,7 +92,7 @@ jobs:
 
 Past sponsors:
 
--   [Yeovil Hospital](https://somersetft.nhs.uk/yeovilhospital/)
+-   [Yeovil Hospital](https://www.somersetft.nhs.uk/yeovilhospital/)
 
 ## Contributing
 
