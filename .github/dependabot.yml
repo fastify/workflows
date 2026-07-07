@@ -6,8 +6,6 @@ updates:
           prefix: ci
       cooldown:
           default-days: 7
-          include:
-              - "*"
       directory: /
       groups:
           github-owned:
