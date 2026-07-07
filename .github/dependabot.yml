@@ -3,7 +3,9 @@ updates:
     - package-ecosystem: github-actions
       commit-message:
           include: scope
-          prefix: build
+          prefix: ci
+      cooldown:
+          default-days: 7
       directory: /
       groups:
           github-owned:
