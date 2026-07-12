@@ -9,8 +9,7 @@ on:
         branches:
             - main
         paths-ignore:
-            - "docs/**"
-            - "*.md"
+            - "**/*.md"
     schedule:
         #        ┌───────────── minute (0 - 59)
         #        │  ┌───────────── hour (0 - 23)
