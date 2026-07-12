@@ -1,5 +1,8 @@
 # Workflows
 
+[![GitHub release](https://img.shields.io/github/v/release/fastify/workflows)](https://github.com/fastify/workflows/releases/latest)
+[![OSSF Scorecard](https://api.scorecard.dev/projects/github.com/fastify/workflows/badge)](https://scorecard.dev/viewer/?uri=github.com/fastify/workflows)
+
 Reusable workflows for use in the Fastify organization.
 
 ## Intro
