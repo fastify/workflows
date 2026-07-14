@@ -6,6 +6,8 @@ name: Lock Threads
 on:
   workflow_call:
 
+permissions: {}
+
 jobs:
   lock-threads:
     name: Lock Threads
