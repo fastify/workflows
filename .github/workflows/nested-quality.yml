@@ -22,6 +22,8 @@ on:
         default: false
         type: boolean
 
+permissions: {}
+
 jobs:
   dependency-review:
     name: Dependency Review
