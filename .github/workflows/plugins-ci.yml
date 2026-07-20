@@ -120,6 +120,7 @@ jobs:
     name: Automerge Dependabot PRs
     if: >
       always() &&
+      needs.quality-check.result == 'success' &&
       needs.test.result == 'success' &&
       (needs.fastify-dependency-integration.result == 'success' || needs.fastify-dependency-integration.result == 'skipped') &&
       github.event_name == 'pull_request' &&
