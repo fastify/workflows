@@ -47,7 +47,7 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
-        db: [5, 6, 7]
+        db: [5, 6, 7, 8]
     services:
       redis:
         image: redis:${{ matrix.db }}
