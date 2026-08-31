@@ -42,7 +42,7 @@ jobs:
       lint: ${{ inputs.lint }}
 
   test:
-    name: Node.js ${{ matrix.node-version }} - ${{ matrix.db }}
+    name: Node.js ${{ matrix.node-version }} - MongoDB ${{ matrix.db }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
