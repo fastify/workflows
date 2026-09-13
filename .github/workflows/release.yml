@@ -1,33 +1,88 @@
 name: release
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       semver:
-        description: 'The semver to use'
+        description: 'Release bump type: patch, minor or major.'
         required: true
-        default: 'patch'
-  pull_request:
-    types: [closed]
+        type: string
+      node-version:
+        description: 'The Node.js version used to build and publish the package.'
+        required: false
+        default: 'lts/*'
+        type: string
+      runs-on:
+        description: 'The runner used to publish the package.'
+        required: false
+        default: 'ubuntu-latest'
+        type: string
+      environment:
+        description: 'The deployment environment that gates the release. Configure it with the required reviewers that are allowed to release.'
+        required: false
+        default: 'release'
+        type: string
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    name: Release
+    runs-on: ${{ inputs.runs-on }}
+    environment: ${{ inputs.environment }}
     permissions:
-      contents: write
-      issues: write
-      pull-requests: write
+      id-token: write # required for npm provenance via OIDC
+      contents: write # required to push the release commit and the tag
+    env:
+      BUMP_TYPE: ${{ inputs.semver }}
     steps:
-      - name: Use Node.js
+      - name: Validate the semver input
+        run: |
+          case "$BUMP_TYPE" in
+            patch|minor|major) ;;
+            *) echo "::error::Invalid semver input '$BUMP_TYPE': expected patch, minor or major." && exit 1 ;;
+          esac
+
+      - name: Check out repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: true # explicit: the release commit and tag are pushed below
+
+      - name: Setup Node ${{ inputs.node-version }}
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           check-latest: true
-          node-version: lts/*
-      - uses: nearform-actions/optic-release-automation-action@08642f7889f3bb519fb69ce2c3bf58e4f900c018 # v4.12.4
+          node-version: ${{ inputs.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false # never use caching in release builds
+
+      - name: Bump package version
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          NEW_VERSION=$(npm version "$BUMP_TYPE" --no-git-tag-version)
+          git add -u # stages package.json and the lockfile, whichever the repo tracks
+          git commit -m "Bumped v${NEW_VERSION#v}"
+          echo "NEW_VERSION=${NEW_VERSION#v}" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Build the release artifacts
+        run: npm run --if-present release:build
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+
+      - name: Push release commit
+        run: git push origin HEAD
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          semver: ${{ github.event.inputs.semver }}
-          sync-semver-tags: true
+          tag_name: v${{ env.NEW_VERSION }}
+          target_commitish: ${{ github.ref_name }}
+          name: v${{ env.NEW_VERSION }}
+          generate_release_notes: true # "What's Changed" from merged PRs + contributors + Full Changelog link
+          make_latest: true
