@@ -91,6 +91,68 @@ jobs:
 | `lint`                               | false      | boolean | `false`   | Set to `true` to run the `lint` script in a repository's `package.json`.           |
 | `node-versions`                      | false      | string  | `'["24", "26"]'`   | Provide A JSON array that specifies the Node.js versions on which the job should run.           |
 
+## Release workflow
+
+`release.yml` is a reusable workflow that bumps the package version, publishes it
+to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements)
+and creates the matching GitHub release.
+
+It authenticates to npm through OIDC, so the consuming package **must** be
+configured as a [trusted publisher](https://docs.npmjs.com/trusted-publishers) on
+npm. No `NPM_TOKEN` secret is needed.
+
+If the repository defines a `release:build` script in its `package.json`, it is
+executed after the dependencies are installed and before `npm publish`. Note that
+this workflow does **not** run the test suite: the CI workflow is expected to
+have already validated the commit being released.
+
+### Usage
+
+Add a `.github/workflows/release.yml` file to your repository:
+
+```yml
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: 'Release bump type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions: {}
+
+jobs:
+  release:
+    permissions:
+      id-token: write
+      contents: write
+    uses: fastify/workflows/.github/workflows/release.yml@v7
+    with:
+      semver: ${{ inputs.semver }}
+```
+
+Then run it from the *Actions* tab, choosing the bump type.
+
+### Inputs
+
+| Input Name     | Required | Type   | Default        | Description                                                          |
+| -------------- | -------- | ------ | -------------- | -------------------------------------------------------------------- |
+| `semver`       | true     | string |                | The release bump type: `patch`, `minor` or `major`.                   |
+| `node-version` | false    | string | `lts/*`        | The Node.js version used to build and publish the package.            |
+| `runs-on`      | false    | string | `ubuntu-latest`| The runner used to publish the package.                               |
+
+### Required permissions
+
+The calling job must grant `id-token: write` (npm provenance via OIDC) and
+`contents: write` (to push the release commit and the tag).
+
+
 ## Acknowledgments
 
 Past sponsors:
