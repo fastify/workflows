@@ -139,6 +139,9 @@ jobs:
 
 Then run it from the *Actions* tab, choosing the bump type.
 
+See [Restricting who can release](#restricting-who-can-release) to limit the
+maintainers that are allowed to approve a release.
+
 ### Inputs
 
 | Input Name     | Required | Type   | Default        | Description                                                          |
@@ -146,11 +149,40 @@ Then run it from the *Actions* tab, choosing the bump type.
 | `semver`       | true     | string |                | The release bump type: `patch`, `minor` or `major`.                   |
 | `node-version` | false    | string | `lts/*`        | The Node.js version used to build and publish the package.            |
 | `runs-on`      | false    | string | `ubuntu-latest`| The runner used to publish the package.                               |
+| `environment`  | false    | string | `release`      | The deployment environment that gates the release.                    |
 
 ### Required permissions
 
 The calling job must grant `id-token: write` (npm provenance via OIDC) and
 `contents: write` (to push the release commit and the tag).
+
+### Restricting who can release
+
+GitHub Actions has no per-workflow access control: anyone with write access to a
+repository can start a `workflow_dispatch` run. To restrict releases to a
+specific set of maintainers, the job runs inside a **deployment environment**
+(`release` by default, configurable through the `environment` input).
+
+In the consuming repository, go to *Settings -> Environments*, create the
+`release` environment and:
+
+- add the team that is allowed to release (for example `fastify/release`) as a
+  **required reviewer**, so every run pauses until one of them approves it;
+- enable **Prevent self-review**, so the person who started the run cannot
+  approve their own release;
+- optionally limit the **deployment branches** to `main`.
+
+Until the environment is approved no step of the job runs, so an unauthorised
+dispatch cannot bump the version nor publish anything.
+
+> [!IMPORTANT]
+> An environment that is referenced but never configured is created
+> automatically **without any protection rule**. Creating the environment and
+> adding the reviewers is a manual, per-repository step.
+
+The same environment name can also be set as the *Environment* field of the npm
+[trusted publisher](https://docs.npmjs.com/trusted-publishers) configuration, so
+that npm itself rejects any publish that does not come from it.
 
 
 ## Acknowledgments

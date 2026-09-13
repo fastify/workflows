@@ -17,6 +17,11 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
+      environment:
+        description: 'The deployment environment that gates the release. Configure it with the required reviewers that are allowed to release.'
+        required: false
+        default: 'release'
+        type: string
 
 permissions: {}
 
@@ -24,6 +29,7 @@ jobs:
   release:
     name: Release
     runs-on: ${{ inputs.runs-on }}
+    environment: ${{ inputs.environment }}
     permissions:
       id-token: write # required for npm provenance via OIDC
       contents: write # required to push the release commit and the tag
