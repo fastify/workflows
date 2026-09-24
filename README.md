@@ -93,7 +93,7 @@ jobs:
 
 ## Release workflow
 
-`release.yml` is a reusable workflow that bumps the package version, publishes it
+`reusable-release.yml` is a reusable workflow that bumps the package version, publishes it
 to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements)
 and creates the matching GitHub release.
 
@@ -108,7 +108,7 @@ have already validated the commit being released.
 
 ### Usage
 
-Add a `.github/workflows/release.yml` file to your repository:
+Add a `.github/workflows/reusable-release.yml` file to your repository:
 
 ```yml
 name: release
@@ -132,7 +132,7 @@ jobs:
     permissions:
       id-token: write
       contents: write
-    uses: fastify/workflows/.github/workflows/release.yml@v7
+    uses: fastify/workflows/.github/workflows/reusable-release.yml@v7
     with:
       semver: ${{ inputs.semver }}
 ```
