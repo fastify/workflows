@@ -64,7 +64,8 @@ jobs:
           NEW_VERSION=$(npm version "$(printf '%s' "$BUMP_TYPE")" --no-git-tag-version)
           git add -u # stages package.json and the lockfile, whichever the repo tracks
           git commit -m "Bumped v$(printf '%s' "${NEW_VERSION#v}")"
-          printf 'NEW_VERSION=%s\n' "${NEW_VERSION#v}" >> "$GITHUB_ENV"
+          SAFE_NEW_VERSION=$(printf '%s' "${NEW_VERSION#v}" | tr -d '\r\n')
+          printf 'NEW_VERSION=%s\n' "$SAFE_NEW_VERSION" >> "$GITHUB_ENV"
 
       - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund
