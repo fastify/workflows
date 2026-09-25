@@ -17,7 +17,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Lock inactive issues and prs
-        uses: dessant/lock-threads@89ae32b08ed1a541efecbab17912962a5e38981c # v6.0.2
+        uses: jsumners/lock-threads@e3fdd3d32ceb60c8418b12813ec4e1b672fea8d9
         with:
           issue-inactive-days: '90'
           pr-inactive-days: '90'
