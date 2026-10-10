@@ -154,7 +154,7 @@ maintainers that are allowed to approve a release.
 ### Required permissions
 
 The calling job must grant `id-token: write` (npm provenance via OIDC) and
-`contents: write` (to push the release commit and the tag).
+`contents: write` (to create the signed release commit and the tag).
 
 ### Restricting who can release
 
