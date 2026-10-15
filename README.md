@@ -146,7 +146,8 @@ maintainers that are allowed to approve a release.
 
 | Input Name     | Required | Type   | Default        | Description                                                          |
 | -------------- | -------- | ------ | -------------- | -------------------------------------------------------------------- |
-| `semver`       | true     | string |                | The release bump type: `patch`, `minor` or `major`.                   |
+| `semver`       | true     | string |                | The release bump type: `patch`, `minor`, `major`, `prepatch`, `preminor`, `premajor` or `prerelease`. |
+| `preid`        | false    | string | `''`           | The prerelease identifier (e.g. `rc`) used by the `pre*` bump types.  |
 | `node-version` | false    | string | `lts/*`        | The Node.js version used to build and publish the package.            |
 | `runs-on`      | false    | string | `ubuntu-latest`| The runner used to publish the package.                               |
 | `environment`  | false    | string | `release`      | The deployment environment that gates the release.                    |
@@ -168,6 +169,46 @@ the current major keeps the `latest` tag:
 ```
 
 Run the workflow from the *Actions* tab selecting the maintenance branch.
+
+### Prereleases
+
+The `prepatch`, `preminor`, `premajor` and `prerelease` bump types publish a
+prerelease (e.g. `5.0.0-rc.0` with `preid: rc`). The GitHub release is flagged
+as a prerelease and never marked as the latest one. Publishing a prerelease
+under the `latest` dist-tag is refused, so set `dist-tag` (e.g. `next`) as well:
+
+```yml
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: 'Release bump type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prepatch
+          - preminor
+          - premajor
+          - prerelease
+      preid:
+        description: 'Prerelease identifier (e.g. rc), used by the pre* bump types'
+        required: false
+        type: string
+
+jobs:
+  release:
+    permissions:
+      id-token: write
+      contents: write
+    uses: fastify/workflows/.github/workflows/reusable-release.yml@v7
+    with:
+      semver: ${{ inputs.semver }}
+      preid: ${{ inputs.preid }}
+      dist-tag: ${{ startsWith(inputs.semver, 'pre') && 'next' || 'latest' }}
+```
 
 ### Required permissions
 

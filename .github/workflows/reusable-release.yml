@@ -4,8 +4,13 @@ on:
   workflow_call:
     inputs:
       semver:
-        description: 'Release bump type: patch, minor or major.'
+        description: 'Release bump type: patch, minor, major, prepatch, preminor, premajor or prerelease.'
         required: true
+        type: string
+      preid:
+        description: 'The prerelease identifier (e.g. "rc", "beta") used by the pre* bump types. Leave empty for a numeric-only prerelease.'
+        required: false
+        default: ''
         type: string
       node-version:
         description: 'The Node.js version used to build and publish the package.'
@@ -46,13 +51,22 @@ jobs:
     env:
       BUMP_TYPE: ${{ inputs.semver }}
       DIST_TAG: ${{ inputs.dist-tag }}
+      PREID: ${{ inputs.preid }}
     steps:
-      - name: Validate the semver input
+      - name: Validate the inputs
         run: |
           case "$BUMP_TYPE" in
             patch|minor|major) ;;
-            *) echo "::error::Invalid semver input '$BUMP_TYPE': expected patch, minor or major." && exit 1 ;;
+            prepatch|preminor|premajor|prerelease)
+              if [ "$DIST_TAG" = "latest" ]; then
+                echo "::error::Refusing to publish a prerelease under the 'latest' dist-tag: set the dist-tag input (e.g. 'next')." && exit 1
+              fi
+              ;;
+            *) echo "::error::Invalid semver input '$BUMP_TYPE': expected patch, minor, major, prepatch, preminor, premajor or prerelease." && exit 1 ;;
           esac
+          if [ -n "$PREID" ] && ! printf '%s' "$PREID" | grep -Eq '^[0-9A-Za-z-]+$'; then
+            echo "::error::Invalid preid input '$PREID': only alphanumerics and hyphens are allowed." && exit 1
+          fi
 
       - name: Check out repo
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -72,7 +86,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          NEW_VERSION=$(npm version "$(printf '%s' "$BUMP_TYPE")" --no-git-tag-version)
+          NEW_VERSION=$(npm version "$(printf '%s' "$BUMP_TYPE")" ${PREID:+--preid "$PREID"} --no-git-tag-version)
           git add -u # stages package.json and the lockfile, whichever the repo tracks
           git commit -m "Bumped v$(printf '%s' "${NEW_VERSION#v}")"
           SAFE_NEW_VERSION=$(printf '%s' "${NEW_VERSION#v}" | tr -d '\r\n')
@@ -97,4 +111,5 @@ jobs:
           target_commitish: ${{ github.ref_name }}
           name: v${{ env.NEW_VERSION }}
           generate_release_notes: true # "What's Changed" from merged PRs + contributors + Full Changelog link
-          make_latest: ${{ inputs.make-latest }}
+          prerelease: ${{ startsWith(inputs.semver, 'pre') }}
+          make_latest: ${{ inputs.make-latest && !startsWith(inputs.semver, 'pre') }}
