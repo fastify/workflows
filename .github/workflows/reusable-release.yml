@@ -22,6 +22,16 @@ on:
         required: false
         default: 'release'
         type: string
+      dist-tag:
+        description: 'The npm dist-tag to publish under. Use a dedicated tag (e.g. "two") when releasing from a maintenance branch.'
+        required: false
+        default: 'latest'
+        type: string
+      make-latest:
+        description: 'Whether to mark the GitHub release as the latest one. Set to false when releasing from a maintenance branch.'
+        required: false
+        default: true
+        type: boolean
 
 permissions: {}
 
@@ -35,6 +45,7 @@ jobs:
       contents: write # required to push the release commit and the tag
     env:
       BUMP_TYPE: ${{ inputs.semver }}
+      DIST_TAG: ${{ inputs.dist-tag }}
     steps:
       - name: Validate the semver input
         run: |
@@ -77,7 +88,7 @@ jobs:
         run: git push origin HEAD
 
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --tag "$DIST_TAG"
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
@@ -86,4 +97,4 @@ jobs:
           target_commitish: ${{ github.ref_name }}
           name: v${{ env.NEW_VERSION }}
           generate_release_notes: true # "What's Changed" from merged PRs + contributors + Full Changelog link
-          make_latest: true
+          make_latest: ${{ inputs.make-latest }}

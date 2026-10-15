@@ -150,6 +150,24 @@ maintainers that are allowed to approve a release.
 | `node-version` | false    | string | `lts/*`        | The Node.js version used to build and publish the package.            |
 | `runs-on`      | false    | string | `ubuntu-latest`| The runner used to publish the package.                               |
 | `environment`  | false    | string | `release`      | The deployment environment that gates the release.                    |
+| `dist-tag`     | false    | string | `latest`       | The npm dist-tag to publish under.                                    |
+| `make-latest`  | false    | boolean| `true`         | Whether to mark the GitHub release as the latest one.                 |
+
+### Releasing from a maintenance branch
+
+When releasing an older major from a maintenance branch (e.g. `v2.x`), publish
+under a dedicated dist-tag and do not mark the GitHub release as the latest, so
+the current major keeps the `latest` tag:
+
+```yml
+    uses: fastify/workflows/.github/workflows/reusable-release.yml@v7
+    with:
+      semver: ${{ inputs.semver }}
+      dist-tag: two
+      make-latest: false
+```
+
+Run the workflow from the *Actions* tab selecting the maintenance branch.
 
 ### Required permissions
 
