@@ -70,7 +70,7 @@ jobs:
           # npm rejects empty tags and tags that parse as a semver range (e.g. "2", "v2", "x"),
           # but only at publish time, after the bump commit has been pushed: fail fast instead.
           if ! printf '%s' "$DIST_TAG" | grep -Eq '^[A-Za-z][0-9A-Za-z._-]*$' \
-            || printf '%s' "$DIST_TAG" | grep -Eq '^[vV]?([0-9]+|[xX])(\.([0-9]+|[xX])){0,2}$'; then
+            || printf '%s' "$DIST_TAG" | grep -Eq '^[vV]?(([0-9]+|[xX])(\.([0-9]+|[xX])){0,2}|[0-9]+\.[0-9]+\.[0-9]+-[0-9A-Za-z.-]+)$'; then
             echo "::error::Invalid dist-tag input '$DIST_TAG': it must start with a letter, contain only alphanumerics, '.', '_' or '-', and not look like a semver range." && exit 1
           fi
 
