@@ -77,7 +77,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           additions=$(git diff --cached --name-only | while IFS= read -r f; do
-            jq -n --arg path "$f" --arg contents "$(git show ":$f" | base64 -w0)" '{path: $path, contents: $contents}'
+            git show ":$f" | base64 -w0 | jq -Rs --arg path "$f" '{path: $path, contents: .}'
           done | jq -s .)
           jq -n \
             --arg repo "$GITHUB_REPOSITORY" \
