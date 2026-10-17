@@ -47,7 +47,7 @@ jobs:
     environment: ${{ inputs.environment }}
     permissions:
       id-token: write # required for npm provenance via OIDC
-      contents: write # required to push the release commit and the tag
+      contents: write # required to create the release commit and the tag
     env:
       BUMP_TYPE: ${{ inputs.semver }}
       DIST_TAG: ${{ inputs.dist-tag }}
@@ -78,7 +78,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          persist-credentials: true # explicit: the release commit and tag are pushed below
+          persist-credentials: false # the release commit is created through the GitHub API, not git push
 
       - name: Setup Node ${{ inputs.node-version }}
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -90,11 +90,8 @@ jobs:
 
       - name: Bump package version
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           NEW_VERSION=$(npm version "$(printf '%s' "$BUMP_TYPE")" ${PREID:+--preid "$PREID"} --no-git-tag-version)
-          git add -u # stages package.json and the lockfile, whichever the repo tracks
-          git commit -m "Bumped v$(printf '%s' "${NEW_VERSION#v}")"
+          git add -u # stages package.json and the lockfile, whichever the repo tracks; committed from the index below
           SAFE_NEW_VERSION=$(printf '%s' "${NEW_VERSION#v}" | tr -d '\r\n')
           printf 'NEW_VERSION=%s\n' "$SAFE_NEW_VERSION" >> "$GITHUB_ENV"
 
@@ -104,8 +101,28 @@ jobs:
       - name: Build the release artifacts
         run: npm run --if-present release:build
 
+            # Commits created through the GitHub API with GITHUB_TOKEN are signed by GitHub,
+      # so the release commit shows as "Verified".
       - name: Push release commit
-        run: git push origin HEAD
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          additions=$(git diff --cached --name-only | while IFS= read -r f; do
+            git show ":$f" | base64 -w0 | jq -Rs --arg path "$f" '{path: $path, contents: .}'
+          done | jq -s .)
+          jq -n \
+            --arg repo "$GITHUB_REPOSITORY" \
+            --arg branch "$GITHUB_REF_NAME" \
+            --arg oid "$(git rev-parse HEAD)" \
+            --arg msg "Bumped v$NEW_VERSION" \
+            --argjson additions "$additions" \
+            '{query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid url } } }",
+              variables: {input: {
+                branch: {repositoryNameWithOwner: $repo, branchName: $branch},
+                expectedHeadOid: $oid,
+                message: {headline: $msg},
+                fileChanges: {additions: $additions}}}}' \
+          | gh api graphql --input - --jq '.data.createCommitOnBranch.commit | "Created \(.oid) \(.url)"'
 
       - name: Publish to npm
         run: npm publish --provenance --access public --tag "$DIST_TAG"
